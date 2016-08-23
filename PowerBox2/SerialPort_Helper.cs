@@ -8,7 +8,7 @@ using Windows.Devices.Enumeration;
 using Windows.Devices.SerialCommunication;
 using Windows.Storage.Streams;
 
-namespace PowerBox
+namespace PowerBox2
 {
     class SerialPort_Helper
     {

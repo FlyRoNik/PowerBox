@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Windows.Devices.Gpio;
 
-namespace PowerBox
+namespace PowerBox2
 {
     class FingerPrintScaner
     {

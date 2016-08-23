@@ -7,7 +7,7 @@ using Windows.Media.MediaProperties;
 using Windows.Storage;
 using System.Threading.Tasks;
 
-namespace PowerBox
+namespace PowerBox2
 {
     class Camera
     {
