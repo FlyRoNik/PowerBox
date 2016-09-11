@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Gpio;
 
@@ -21,6 +22,8 @@ namespace PowerBox2
         private byte[] bytesRead;
 
         private int timeRespon; // get only using function - getTimeRespon()
+
+        private static Semaphore _pool = new Semaphore(1, 2);
 
         public class User
         {
@@ -185,17 +188,31 @@ namespace PowerBox2
 
         private void delegteReadAsync(byte[] byteArray)
         {
+            _pool.WaitOne();
             bytesRead = byteArray;
             respon = true;
+            _pool.Release();
         }
 
         private void waitResponse(int time)
         {
             Task thread = new Task(() => {
-                while (!respon){ }
+                while (!respon)
+                {
+                    _pool.WaitOne();
+                    _pool.Release();
+                }
             });
             thread.Start();
-            thread.Wait(time);
+            if (time == 0)
+            {
+                thread.Wait();
+            }
+            else
+            {
+                thread.Wait(time);
+            }
+
             if (!respon)
             {
                 throw new Exception("Scanner does not respond");
@@ -230,13 +247,13 @@ namespace PowerBox2
             }
             else
             {
-                return 255;
+                return -TIME_RESPON;
             }
         }
 
         public void setTimeRespon()
         {
-            timeRespon = getNumberOfUsers() * 1000;
+            timeRespon = getTimeoutValue() * 1000;
         }
 
         public void setReset(Value value)
@@ -395,18 +412,11 @@ namespace PowerBox2
 
         public string setComparisonLevel(int level)
         {
-            if (level >= 0 && level < 10)
-            {
-                send(new byte[] { 0xF5, 0x28, 0x00, (byte)level, 0x00, 0x00, 0x00, 0xF5 });
+            send(new byte[] { 0xF5, 0x28, 0x00, (byte)level, 0x00, 0x00, 0x00, 0xF5 });
 
-                waitResponse(TIME_RESPON);
+            waitResponse(TIME_RESPON);
 
-                return response();
-            }
-            else
-            {
-                return "this level doesn't exists";
-            }
+            return response();
         }
 
         public int getComparisonLevel()
@@ -445,23 +455,16 @@ namespace PowerBox2
 
         public string setTimeoutValue(int value)
         {
-            if (value >= 0 && value < 255)
+            send(new byte[] { 0xF5, 0x2E, 0x00, (byte)value, 0x00, 0x00, 0x00, 0xF5 });
+
+            waitResponse(TIME_RESPON);
+
+            if (bytesRead[4] == 0x00)
             {
-                send(new byte[] { 0xF5, 0x2E, 0x00, (byte)value, 0x00, 0x00, 0x00, 0xF5 });
-
-                waitResponse(TIME_RESPON);
-
-                if (bytesRead[4] == 0x00)
-                {
-                    timeRespon = value * 1000;
-                }
-
-                return response();
+                timeRespon = value * 1000;
             }
-            else
-            {
-                return "this value doesn't exists";
-            }
+
+            return response();
         }
 
         public int getTimeoutValue()

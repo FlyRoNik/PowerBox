@@ -99,12 +99,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Box.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="FingerPrintScaner.cs" />
     <Compile Include="I2C_Helper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MCU.cs" />
     <Compile Include="Pick up\Goodbye.xaml.cs">
       <DependentUpon>Goodbye.xaml</DependentUpon>
     </Compile>
@@ -178,10 +180,12 @@
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="WindowsIoT, Version=10.0.10586.0">
-      <Name>Windows IoT Extensions for the UWP</Name>
+      <Name>Windows IoT Extensions for the UWP %28WindowsIoT, Version=10.0.10586.0%29</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

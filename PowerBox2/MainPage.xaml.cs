@@ -22,9 +22,35 @@ namespace PowerBox2
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private Box box;
         public MainPage()
         {
             this.InitializeComponent();
+            
+            try
+            {
+                box = new Box();
+            }
+            catch (Exception ex)
+            {
+                textBlock.Text = ex.Message;
+            }
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            //проверка закрытости ячеек
+            for (int i = 0; i < /*box.mcu.Length*/2; i++)
+            {
+                if (box.mcu[i].getDataMicrocontroller()[1] == 0)
+                {
+                    int n = i + 1;
+                    textBlock.Text = "Ячейка №" + n + " не закрыта";
+                    return;
+                }
+            }
+
+            this.Frame.Navigate(typeof(Put.Welcome), box);
         }
     }
 }

@@ -8,15 +8,15 @@
     mc:Ignorable="d" Height="600">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid HorizontalAlignment="Left" Height="520" Margin="561,21,0,0" VerticalAlignment="Top" Width="240">
-            <Button x:Name="button" Content="cell 1" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36"/>
-            <Button x:Name="button1" Content="cell 2" HorizontalAlignment="Left" Margin="140,0,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36"/>
-            <Button x:Name="button2" Content="cell 3" HorizontalAlignment="Left" Margin="0,140,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36"/>
-            <Button x:Name="button3" Content="cell 4" HorizontalAlignment="Left" Margin="140,140,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36"/>
-            <Button x:Name="button4" Content="cell 5" HorizontalAlignment="Left" Margin="0,280,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36"/>
-            <Button x:Name="button5" Content="cell 6" HorizontalAlignment="Left" Margin="140,280,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36"/>
-            <Button x:Name="button6" Content="cell 7" HorizontalAlignment="Left" Margin="0,420,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36"/>
-            <Button x:Name="button7" Content="cell 8" HorizontalAlignment="Left" Margin="140,420,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36"/>
+        <Grid HorizontalAlignment="Left" Height="520" Margin="333,29,0,0" VerticalAlignment="Top" Width="240">
+            <Button x:Name="button" Content="cell 1" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36" TabIndex="0" Click="button_Click"/>
+            <Button x:Name="button1" Content="cell 2" HorizontalAlignment="Left" Margin="140,0,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36" TabIndex="1" Click="button_Click"/>
+            <Button x:Name="button2" Content="cell 3" HorizontalAlignment="Left" Margin="0,140,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36" TabIndex="2" Click="button_Click"/>
+            <Button x:Name="button3" Content="cell 4" HorizontalAlignment="Left" Margin="140,140,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36" TabIndex="3" Click="button_Click"/>
+            <Button x:Name="button4" Content="cell 5" HorizontalAlignment="Left" Margin="0,280,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36" TabIndex="4" Click="button_Click"/>
+            <Button x:Name="button5" Content="cell 6" HorizontalAlignment="Left" Margin="140,280,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36" TabIndex="5" Click="button_Click"/>
+            <Button x:Name="button6" Content="cell 7" HorizontalAlignment="Left" Margin="0,420,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36" TabIndex="6" Click="button_Click"/>
+            <Button x:Name="button7" Content="cell 8" HorizontalAlignment="Left" Margin="140,420,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36" TabIndex="7" Click="button_Click"/>
         </Grid>
 
     </Grid>

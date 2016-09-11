@@ -7,12 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Height="600">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="226,143,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" Height="171" Width="473">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RenderTransformOrigin="0.5,0.5">
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="228,143,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" Height="171" Width="473">
             <Run Text="Приложите "/>
             <Run Text="плец к сканеру и следуйте указаниям"/>
         </TextBlock>
-        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="399,394,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="36"/>
-
+        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="328,388,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="36"/>
+        <ProgressRing x:Name="progress1" HorizontalAlignment="Left" Margin="439,343,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Page>

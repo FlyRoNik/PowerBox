@@ -22,9 +22,41 @@ namespace PowerBox2.Put
     /// </summary>
     public sealed partial class СellSelection : Page
     {
+        private Box box;
+        private Button[] buttons;
+
         public СellSelection()
         {
             this.InitializeComponent();
+            this.NavigationCacheMode = NavigationCacheMode.Enabled; //сохранение состояния страницы
+            buttons = new Button[] { button, button1, button2, button3, button4, button5, button6, button7 };
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is Box)
+            {
+                box = (Box)e.Parameter;
+            }
+            base.OnNavigatedTo(e);
+
+            FingerPrintScaner.User[] user = box.scaner.getUserNumbersAndPrivilege(); //exception
+
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                buttons[i].IsEnabled = true;
+            }
+
+            for (int i = 0; i < user.Length; i++)
+            {
+                buttons[user[i].getID()].IsEnabled = false;
+            }
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            box.numberCell = ((Button)sender).TabIndex;
+            this.Frame.Navigate(typeof(Scanning), box);
         }
     }
 }

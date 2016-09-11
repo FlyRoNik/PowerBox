@@ -10,7 +10,9 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="326,68,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" Height="118" Width="423">
             <Run Text="П"/>
-            <Run Text="одключите девайс и защелкните ячейку"/>
+            <Run Text="одключите девайс и за"/>
+            <Run Text="кройте"/>
+            <Run Text=" ячейку"/>
         </TextBlock>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="421,326,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="36"/>
 
