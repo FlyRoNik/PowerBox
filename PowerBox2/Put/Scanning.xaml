@@ -14,5 +14,6 @@
         </TextBlock>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="328,388,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="36"/>
         <ProgressRing x:Name="progress1" HorizontalAlignment="Left" Margin="439,343,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="button" Content="Назад" HorizontalAlignment="Left" Margin="65,35,0,0" VerticalAlignment="Top" FontSize="20"/>
     </Grid>
 </Page>

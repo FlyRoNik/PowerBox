@@ -29,7 +29,8 @@ namespace PowerBox2.Put
         private Box box;
         private bool flag;
 
-        private static Semaphore _pool = new Semaphore(1, 2);
+        private MySemaphore _pool = new MySemaphore(1, 2);
+        private MySemaphore _pool2 = new MySemaphore(1, 2);
 
         public Welcome()
         {
@@ -43,18 +44,17 @@ namespace PowerBox2.Put
         {
             try
             {
-                _pool.WaitOne();
+                _pool.Wait();
                 flag = true;
-                box.scaner.setComparisonLevel(10); //генерация ошибки для освобождения потока
+                box.scaner.genExcept(); //генерация ошибки для освобождения потока
             }
             catch (Exception) { }
             finally
             {
-                _pool.Release();
+                _pool.TryRelease();
             }
-            Task.Delay(-1).Wait(100);
-            _pool.WaitOne();
-            _pool.Release();
+            _pool2.Wait();
+            _pool2.TryRelease();
             this.Frame.Navigate(typeof(СellSelection), box);
         }
 
@@ -78,18 +78,23 @@ namespace PowerBox2.Put
             {
                 try
                 {
+                    _pool2.Wait();
                     box.numberCell = box.scaner.compareOneToMore().getID();
-                    _pool.WaitOne();
+                    _pool.Wait();
                     if (flag)
                     {
                         flag = false;
-                        _pool.Release();
                         return;
                     }
                     break;
                 }
                 catch (Exception ex)
                 {
+                    if (flag)
+                    {
+                        flag = false;
+                        return;
+                    }
                     await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         // This now works, because it's running on the UI thread:
@@ -98,7 +103,8 @@ namespace PowerBox2.Put
                 }
                 finally
                 {
-                    _pool.Release();
+                    _pool.TryRelease();
+                    _pool2.TryRelease();
                 }
             }
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>

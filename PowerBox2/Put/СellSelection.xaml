@@ -18,6 +18,8 @@
             <Button x:Name="button6" Content="cell 7" HorizontalAlignment="Left" Margin="0,420,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36" TabIndex="6" Click="button_Click"/>
             <Button x:Name="button7" Content="cell 8" HorizontalAlignment="Left" Margin="140,420,0,0" VerticalAlignment="Top" Width="100" Height="100" FontSize="36" TabIndex="7" Click="button_Click"/>
         </Grid>
+        <Button x:Name="button8" Content="Назад" HorizontalAlignment="Left" Margin="178,29,0,0" VerticalAlignment="Top" FontSize="20" Click="button8_Click"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="178,134,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
 
     </Grid>
 </Page>

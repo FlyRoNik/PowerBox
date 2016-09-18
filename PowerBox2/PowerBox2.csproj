@@ -120,6 +120,7 @@
     <Compile Include="Put\Scanning.xaml.cs">
       <DependentUpon>Scanning.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Semaphore.cs" />
     <Compile Include="SerialPort_Helper.cs" />
     <Compile Include="Put\Welcome.xaml.cs">
       <DependentUpon>Welcome.xaml</DependentUpon>

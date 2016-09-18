@@ -18,12 +18,15 @@ namespace PowerBox2
         private GpioPinValue resetValue;
 
         private bool respon;
+        private bool error;
 
         private byte[] bytesRead;
 
         private int timeRespon; // get only using function - getTimeRespon()
 
-        private static Semaphore _pool = new Semaphore(1, 2);
+        private MySemaphore _pool = new MySemaphore(1, 2);
+        private MySemaphore _pool2 = new MySemaphore(0, 1);
+        private MySemaphore _pool3 = new MySemaphore(0, 1);
 
         public class User
         {
@@ -151,8 +154,9 @@ namespace PowerBox2
         public FingerPrintScaner(int BLINK, int RESET)
         {
             respon = false;
+            error = false;
 
-            serialPort = new SerialPort_Helper(delegteReadAsync);
+            serialPort = new SerialPort_Helper(delegteReadAsync, exception);
 
             var gpio = GpioController.GetDefault();
 
@@ -188,10 +192,18 @@ namespace PowerBox2
 
         private void delegteReadAsync(byte[] byteArray)
         {
-            _pool.WaitOne();
+            _pool2.Wait();
+            _pool.Wait();
             bytesRead = byteArray;
             respon = true;
-            _pool.Release();
+            _pool.TryRelease();
+        }
+
+        private void exception(Exception exception) //обработать вызваное исключение
+        {
+            _pool.Wait();
+            serialPort.connection();
+            _pool.TryRelease();
         }
 
         private void waitResponse(int time)
@@ -199,11 +211,10 @@ namespace PowerBox2
             Task thread = new Task(() => {
                 while (!respon)
                 {
-                    _pool.WaitOne();
-                    _pool.Release();
                 }
             });
             thread.Start();
+            _pool2.TryRelease();
             if (time == 0)
             {
                 thread.Wait();
@@ -213,12 +224,21 @@ namespace PowerBox2
                 thread.Wait(time);
             }
 
+            _pool.Wait();
+            _pool.TryRelease();
+
             if (!respon)
             {
+                respon = false;
                 throw new Exception("Scanner does not respond");
             }
             else
             {
+                if (error)
+                {
+                    _pool3.TryRelease();
+                    error = false;
+                }
                 respon = false;
             }
         }
@@ -417,6 +437,15 @@ namespace PowerBox2
             waitResponse(TIME_RESPON);
 
             return response();
+        }
+
+        public void genExcept()
+        {
+            error = true;
+
+            send(new byte[] { 0xF5, 0x28, 0x00, 0x10, 0x00, 0x00, 0x00, 0xF5 });
+
+            _pool3.Wait();
         }
 
         public int getComparisonLevel()

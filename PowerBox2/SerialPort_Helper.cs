@@ -20,15 +20,17 @@ namespace PowerBox2
         private CancellationTokenSource ReadCancellationTokenSource;
 
         private Action<byte[]> delegteReadAsync;
+        private Action<Exception> exception;
 
-        public async Task RunTheMethod(Func<byte[], Task> myMethodName, byte[] mas)
-        {
-            await myMethodName(mas);
-        }
+        //public async Task RunTheMethod(Func<byte[], Task> myMethodName, byte[] mas)
+        //{
+        //    await myMethodName(mas);
+        //}
 
-        public SerialPort_Helper(Action<byte[]> delegteReadAsync)
+        public SerialPort_Helper(Action<byte[]> delegteReadAsync, Action<Exception> exception)
         {
             this.delegteReadAsync = delegteReadAsync;
+            this.exception = exception;
             connection();
         }
 
@@ -95,21 +97,22 @@ namespace PowerBox2
                 if (ex.GetType().Name == "TaskCanceledException")
                 {
                     CloseDevice();
-                    throw new Exception("Reading task was cancelled, closing device and cleaning up");
+                    exception(new Exception("Reading task was cancelled, closing device and cleaning up"));
                 }
                 else
                 {
-                    throw new Exception(ex.Message);
+                    //exception(new Exception(ex.Message));
+                    connection();
                 }
             }
             finally
             {
                 // Cleanup once complete
-                if (dataReaderObject != null)
-                {
-                    dataReaderObject.DetachStream();
-                    dataReaderObject = null;
-                }
+                //if (dataReaderObject != null)
+                //{
+                //    dataReaderObject.DetachStream();
+                //    dataReaderObject = null;
+                //}
             }
         }
 

@@ -40,7 +40,16 @@ namespace PowerBox2.Put
             }
             base.OnNavigatedTo(e);
 
-            FingerPrintScaner.User[] user = box.scaner.getUserNumbersAndPrivilege(); //exception
+            FingerPrintScaner.User[] user = null;
+            try
+            {
+                user = box.scaner.getUserNumbersAndPrivilege();
+            }
+            catch (Exception ex)
+            {
+                textBlock.Text = ex.Message;
+                return;
+            }
 
             for (int i = 0; i < buttons.Length; i++)
             {
@@ -57,6 +66,11 @@ namespace PowerBox2.Put
         {
             box.numberCell = ((Button)sender).TabIndex;
             this.Frame.Navigate(typeof(Scanning), box);
+        }
+
+        private void button8_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Welcome), box);
         }
     }
 }

@@ -41,8 +41,6 @@ namespace PowerBox2
             {
                 throw new Exception(ex.Message);
             }
-
-
         }
     }
 }

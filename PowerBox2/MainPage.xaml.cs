@@ -26,7 +26,7 @@ namespace PowerBox2
         public MainPage()
         {
             this.InitializeComponent();
-            
+
             try
             {
                 box = new Box();
@@ -51,6 +51,11 @@ namespace PowerBox2
             }
 
             this.Frame.Navigate(typeof(Put.Welcome), box);
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }
