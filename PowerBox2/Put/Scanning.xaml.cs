@@ -25,6 +25,12 @@ namespace PowerBox2.Put
     public sealed partial class Scanning : Page
     {
         private Box box;
+        private bool inter;
+        private bool flag;
+
+        private MySemaphore _pool = new MySemaphore(0, 1);
+        private MySemaphore _pool2 = new MySemaphore(0, 1);
+        private MySemaphore _pool3 = new MySemaphore(1, 1);
 
         public Scanning()
         {
@@ -34,6 +40,9 @@ namespace PowerBox2.Put
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            inter = false;
+            flag = true;
+
             if (e.Parameter is Box)
             {
                 box = (Box)e.Parameter;
@@ -50,10 +59,9 @@ namespace PowerBox2.Put
         {
             string status;
 
-            bool flag = true;
-
             while (flag)
             {
+                
                 status = Progres(FingerPrintScaner.Times.First);
                 if (status == "Operation successfully")
                 {
@@ -82,7 +90,15 @@ namespace PowerBox2.Put
                 {
                     dispatch(() =>{ textBlock1.Text = status; });
                 }
+
+                if (inter && flag)
+                {
+                    inter = false;
+                    _pool2.TryRelease();
+                    return;
+                }
             }
+            _pool2.TryRelease();
             dispatch(() =>{ this.Frame.Navigate(typeof(PutDevice), box); });
         }
 
@@ -92,8 +108,14 @@ namespace PowerBox2.Put
             {
                 progress1.IsActive = true;
             });
+            string st = "";
 
-            string st = box.scaner.addFingerPrint(box.numberCell, FingerPrintScaner.Privilege.USER, times);
+            _pool3.Wait();
+            if (!inter)
+            {
+                st = box.scaner.addFingerPrint(box.numberCell, FingerPrintScaner.Privilege.USER, times);
+            }
+            _pool3.TryRelease();
 
             dispatch(() =>
             {
@@ -107,5 +129,24 @@ namespace PowerBox2.Put
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, agileCallback);
         }
 
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                inter = true;
+                if (_pool3.count == 0)
+                {
+                    box.scaner.genExcept(); //генерация ошибки для освобождения потока
+                }
+            }
+            catch (Exception) { }
+
+            _pool2.Wait();
+
+            if (flag)
+            {
+                this.Frame.Navigate(typeof(СellSelection), box);
+            }
+        }
     }
 }

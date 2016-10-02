@@ -22,6 +22,8 @@ namespace PowerBox2
         private Action<byte[]> delegteReadAsync;
         private Action<Exception> exception;
 
+        private MySemaphore _pool = new MySemaphore(0, 1);
+
         //public async Task RunTheMethod(Func<byte[], Task> myMethodName, byte[] mas)
         //{
         //    await myMethodName(mas);
@@ -103,16 +105,17 @@ namespace PowerBox2
                 {
                     //exception(new Exception(ex.Message));
                     connection();
+                    _pool.TryRelease();
                 }
             }
             finally
             {
-                // Cleanup once complete
-                //if (dataReaderObject != null)
-                //{
-                //    dataReaderObject.DetachStream();
-                //    dataReaderObject = null;
-                //}
+                //Cleanup once complete
+                if (dataReaderObject != null)
+                {
+                    dataReaderObject.DetachStream();
+                    dataReaderObject = null;
+                }
             }
         }
 
@@ -144,7 +147,7 @@ namespace PowerBox2
             }
         }
 
-        private void CloseDevice()
+        public void CloseDevice()
         {
             if (serialPort != null)
             {
@@ -155,32 +158,39 @@ namespace PowerBox2
 
         public async void Write(byte[] mas)
         {
-            try
+            bool flag = false;
+            while (!flag)
             {
-                if (serialPort != null)
+                try
                 {
-                    // Create the DataWriter object and attach to OutputStream
-                    dataWriteObject = new DataWriter(serialPort.OutputStream);
+                    if (serialPort != null)
+                    {
+                        // Create the DataWriter object and attach to OutputStream
+                        dataWriteObject = new DataWriter(serialPort.OutputStream);
 
-                    //Launch the WriteAsync task to perform the write
-                    await WriteAsync(mas);
+                        //Launch the WriteAsync task to perform the write
+                        await WriteAsync(mas);
+                        flag = true;
+                    }
+                    else
+                    {
+                        throw new Exception("Select a device and connect");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    throw new Exception("Select a device and connect");
+                    _pool.Wait();
+                    //connection();
+                    //throw new Exception(ex.Message);
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            finally
-            {
-                // Cleanup once complete
-                if (dataWriteObject != null)
+                finally
                 {
-                    dataWriteObject.DetachStream();
-                    dataWriteObject = null;
+                    // Cleanup once complete
+                    if (dataWriteObject != null)
+                    {
+                        dataWriteObject.DetachStream();
+                        dataWriteObject = null;
+                    }
                 }
             }
         }

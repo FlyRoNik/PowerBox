@@ -177,6 +177,27 @@ namespace PowerBox2
             pinReset.SetDriveMode(GpioPinDriveMode.Output);     
         }
 
+        public void CloseFingerPrintScaner()
+        {
+            if (serialPort != null)
+            {
+                serialPort.CloseDevice();
+                serialPort = null;
+            }
+
+            if (pinBlink != null)
+            {
+                pinBlink.Dispose();
+            }
+                pinBlink = null;
+
+            if (pinReset != null)
+            {
+                pinReset.Dispose();
+            }
+                pinReset = null;
+        }
+
         private void send(byte[] comand)
         {
             byte checksum = 0;

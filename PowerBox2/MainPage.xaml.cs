@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Data.Xml.Dom;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,6 +25,8 @@ namespace PowerBox2
     public sealed partial class MainPage : Page
     {
         private Box box;
+        private IStorageFile configFile;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -55,7 +59,14 @@ namespace PowerBox2
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            
+            try
+            {
+                box = new Box();
+            }
+            catch (Exception ex)
+            {
+                textBlock.Text = ex.Message;
+            }
         }
     }
 }

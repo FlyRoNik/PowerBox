@@ -41,6 +41,7 @@ namespace PowerBox2.Pick_up
             base.OnNavigatedTo(e);
 
             box.mcu[box.numberCell].setPinDigital(6, 1); // открыть ячейку
+            box.scaner.deleteUser(box.numberCell);
 
             Task thread = new Task(() => {
                 waitingClosing();
@@ -50,15 +51,23 @@ namespace PowerBox2.Pick_up
 
         private void waitingClosing()
         {
-            while (true)
+            try
             {
-                if (box.mcu[box.numberCell].getDataMicrocontroller()[1] == 1)
+                while (true)
                 {
-                    box.mcu[box.numberCell].setPinDigital(6, 0); // закрыть ячейку
-                    break;
+                    if (box.mcu[box.numberCell].getDataMicrocontroller()[1] == 1)
+                    {
+                        box.mcu[box.numberCell].setPinDigital(6, 0); // закрыть ячейку
+                        break;
+                    }
+                    Task.Delay(-1).Wait(1000);
                 }
-                Task.Delay(-1).Wait(100);
             }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
             dispatch(() => { this.Frame.Navigate(typeof(Goodbye), box); });
         }
 

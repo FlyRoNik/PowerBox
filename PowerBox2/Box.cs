@@ -27,19 +27,50 @@ namespace PowerBox2
                     scaner = new FingerPrintScaner(PIN_BLINK, PIN_RESET);
                 });
                 thread.Start();
-                Task.Delay(-1).Wait(2000);
+                thread.Wait();
                 scaner.setTimeRespon();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Scanner does not respond")
+                {
+                    try
+                    {
+                        scaner.setReset(FingerPrintScaner.Value.OFF);
+                        scaner.setReset(FingerPrintScaner.Value.ON);
+                        scaner.setTimeRespon();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Scaner: " + e.Message);
+                    }
+                }
+                else
+                {
+                    scaner.CloseFingerPrintScaner();
+                    throw new Exception("Scaner: " + ex.Message);
+                }
+            }
 
+            try
+            {
                 for (int i = 0; i < NUMBER_BOX; i++)
                 {
                     mcu[i] = new MCU(i);
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MCU: " + ex.Message);
+            }
 
+            try
+            {
                 cam = new Camera();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exception("Camera: " + ex.Message);
             }
         }
     }
