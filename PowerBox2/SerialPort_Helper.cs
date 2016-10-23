@@ -136,6 +136,7 @@ namespace PowerBox2
             loadAsyncTask = dataReaderObject.LoadAsync(ReadBufferLength).AsTask(cancellationToken);
 
             // Launch the task and wait
+            Debag.Write("SP_H139");
             UInt32 bytesRead = await loadAsyncTask;
             if (bytesRead > 0)
             {
@@ -144,6 +145,7 @@ namespace PowerBox2
                 byte[] fileContent = new byte[reader.UnconsumedBufferLength];
                 reader.ReadBytes(fileContent);
                 delegteReadAsync(fileContent);
+                Debag.Write("SP_H148");
             }
         }
 
@@ -156,7 +158,7 @@ namespace PowerBox2
             serialPort = null;
         }
 
-        public async void Write(byte[] mas)
+        public void Write(byte[] mas)
         {
             bool flag = false;
             while (!flag)
@@ -167,9 +169,9 @@ namespace PowerBox2
                     {
                         // Create the DataWriter object and attach to OutputStream
                         dataWriteObject = new DataWriter(serialPort.OutputStream);
-
+                        Debag.Write("SP_H170");
                         //Launch the WriteAsync task to perform the write
-                        await WriteAsync(mas);
+                        WriteAsync(mas);
                         flag = true;
                     }
                     else
@@ -196,17 +198,27 @@ namespace PowerBox2
         }
 
         // WriteAsync: Task that asynchronously writes data from the input text box 'sendText' to the OutputStream 
-        private async Task WriteAsync(byte[] mas)
+        private void WriteAsync(byte[] mas)
         {
-            Task<UInt32> storeAsyncTask;
+            try
+            {
+                Task<UInt32> storeAsyncTask;
 
-            // Load the text from the sendText input text box to the dataWriter object
-            dataWriteObject.WriteBytes(mas);
-
-            // Launch an async task to complete the write operation
-            storeAsyncTask = dataWriteObject.StoreAsync().AsTask();
-
-            await storeAsyncTask;
+                // Load the text from the sendText input text box to the dataWriter object
+                dataWriteObject.WriteBytes(mas);
+                //Debag.Write("SP_H205");
+                //Task.Delay(-1).Wait(200);
+                // Launch an async task to complete the write operation
+                storeAsyncTask = dataWriteObject.StoreAsync().AsTask(); //0xc000000d
+                //Debag.Write("SP_H208");
+                //await storeAsyncTask;
+                storeAsyncTask.Wait();
+                //Debag.Write("SP_H210");
+            }
+            catch (Exception ex)
+            {
+                Debag.Write(ex.Message);
+            }
         }
     }
 }

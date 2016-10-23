@@ -32,6 +32,8 @@ namespace PowerBox2.Put
         private MySemaphore _pool = new MySemaphore(1, 2);
         private MySemaphore _pool2 = new MySemaphore(1, 2);
 
+
+
         public Welcome()
         {
             this.InitializeComponent();
@@ -42,6 +44,7 @@ namespace PowerBox2.Put
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            Debag.Write("W45 ");
             try
             {
                 _pool.Wait();
@@ -55,6 +58,7 @@ namespace PowerBox2.Put
             }
             _pool2.Wait();
             _pool2.TryRelease();
+            Debag.Write("W59 ");
             this.Frame.Navigate(typeof(СellSelection), box);
         }
 
@@ -65,7 +69,7 @@ namespace PowerBox2.Put
                 box = (Box)e.Parameter;
             }
             base.OnNavigatedTo(e);
-
+            Debag.Write("W72 ");
             Task thread = new Task(() => {
                 scanning();
             });
@@ -74,6 +78,7 @@ namespace PowerBox2.Put
 
         private async void scanning()
         {
+            Debag.Write("W81 ");
             while (true)
             {
                 try
@@ -107,6 +112,8 @@ namespace PowerBox2.Put
                     _pool2.TryRelease();
                 }
             }
+
+            Debag.Write("W116 ");
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 this.Frame.Navigate(typeof(Pick_up.PickUpDevice), box);

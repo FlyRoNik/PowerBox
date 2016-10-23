@@ -101,6 +101,7 @@
     </Compile>
     <Compile Include="Box.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Debag.cs" />
     <Compile Include="FingerPrintScaner.cs" />
     <Compile Include="I2C_Helper.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -136,6 +137,7 @@
     <None Include="PowerBox2_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Image\1.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

@@ -40,10 +40,12 @@ namespace PowerBox2.Put
             }
             base.OnNavigatedTo(e);
 
+            Debag.Write("С43 ");
             FingerPrintScaner.User[] user = null;
             try
             {
                 user = box.scaner.getUserNumbersAndPrivilege();
+                Debag.Write("С48 ");
             }
             catch (Exception ex)
             {
@@ -60,6 +62,7 @@ namespace PowerBox2.Put
             {
                 buttons[user[i].getID()].IsEnabled = false;
             }
+            Debag.Write("С64 ");
         }
 
         private void button_Click(object sender, RoutedEventArgs e)

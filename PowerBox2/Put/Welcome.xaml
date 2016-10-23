@@ -7,10 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Height="600">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button x:Name="button" Content="Положить" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Height="70" Width="200" Click="button_Click" FontSize="36"/>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush Stretch="Fill" ImageSource="\Image\1.jpg"/>
+        </Grid.Background>
+        <Button x:Name="button" Content="Положить" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Height="70" Width="200" Click="button_Click" FontSize="36" Background="White"
+                />
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="186,99,0,0" TextWrapping="Wrap" Text="Чтобы забрать ваше устройство авторизируйтесь с помощью вашего отпечатка палца" VerticalAlignment="Top" Height="111" Width="709" FontSize="36"/>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="449,404,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
-
     </Grid>
 </Page>

@@ -25,7 +25,6 @@ namespace PowerBox2
     public sealed partial class MainPage : Page
     {
         private Box box;
-        private IStorageFile configFile;
 
         public MainPage()
         {

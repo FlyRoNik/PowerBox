@@ -207,7 +207,7 @@ namespace PowerBox2
                 checksum ^= comand[i];
             }
             comand[6] = checksum;
-
+            Debag.Write("FPS210");
             serialPort.Write(comand);
         }
 
@@ -354,11 +354,11 @@ namespace PowerBox2
         public string addFingerPrint(int ID, Privilege privilege, Times times)
         {
             UserID userId = new UserID(ID, true);
-       
+            Debag.Write("FPS359");
             send(new byte[] { 0xF5, (byte)times, userId.getHighID(), userId.getLowID(), (byte)privilege, 0x00, 0x00, 0xF5 });
 
             waitResponse(TIME_RESPON + getTimeRespon());
-
+            Debag.Write("FPS363");
             return response();
         }
 
@@ -463,9 +463,9 @@ namespace PowerBox2
         public void genExcept()
         {
             error = true;
-
+            Debag.Write("FPS466");
             send(new byte[] { 0xF5, 0x28, 0x00, 0x10, 0x00, 0x00, 0x00, 0xF5 });
-
+            Debag.Write("FPS468");
             _pool3.Wait();
         }
 
@@ -480,10 +480,11 @@ namespace PowerBox2
 
         public User[] getUserNumbersAndPrivilege()
         {
+            Debag.Write("FPS485");
             send(new byte[] { 0xF5, 0x2B, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF5 });
-
+            Debag.Write("FPS487");
             waitResponse(TIME_RESPON);
-
+            Debag.Write("FPS489");
             if (bytesRead[4] == 1)
             {
                 throw new Exception(response());

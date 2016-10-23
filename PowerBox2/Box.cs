@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +22,8 @@ namespace PowerBox2
 
         public Box()
         {
+            Debag.createdirectory();
+
             try
             {
                 Task thread = new Task(() =>
@@ -73,5 +77,6 @@ namespace PowerBox2
                 throw new Exception("Camera: " + ex.Message);
             }
         }
+
     }
 }
