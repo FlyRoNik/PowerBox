@@ -20,19 +20,12 @@ namespace PowerBox2
         private CancellationTokenSource ReadCancellationTokenSource;
 
         private Action<byte[]> delegteReadAsync;
-        private Action<Exception> exception;
 
         private MySemaphore _pool = new MySemaphore(0, 1);
 
-        //public async Task RunTheMethod(Func<byte[], Task> myMethodName, byte[] mas)
-        //{
-        //    await myMethodName(mas);
-        //}
-
-        public SerialPort_Helper(Action<byte[]> delegteReadAsync, Action<Exception> exception)
+        public SerialPort_Helper(Action<byte[]> delegteReadAsync)
         {
             this.delegteReadAsync = delegteReadAsync;
-            this.exception = exception;
             connection();
         }
 
@@ -49,7 +42,7 @@ namespace PowerBox2
 
             if (myDevices.Count == 0)
             {
-                throw new Exception("Device not found...");
+                Debag.Write("Device not found...");
             }
 
             try
@@ -73,7 +66,7 @@ namespace PowerBox2
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                Debag.Write(ex.Message);
             }
         }
 
@@ -99,14 +92,11 @@ namespace PowerBox2
                 if (ex.GetType().Name == "TaskCanceledException")
                 {
                     CloseDevice();
-                    exception(new Exception("Reading task was cancelled, closing device and cleaning up"));
+                    Debag.Write("Reading task was cancelled, closing device and cleaning up");
                 }
-                else
-                {
-                    //exception(new Exception(ex.Message));
-                    connection();
-                    _pool.TryRelease();
-                }
+                Task thread = new Task(connection);
+                thread.Start();
+                _pool.TryRelease();
             }
             finally
             {
@@ -136,7 +126,6 @@ namespace PowerBox2
             loadAsyncTask = dataReaderObject.LoadAsync(ReadBufferLength).AsTask(cancellationToken);
 
             // Launch the task and wait
-            Debag.Write("SP_H139");
             UInt32 bytesRead = await loadAsyncTask;
             if (bytesRead > 0)
             {
@@ -145,7 +134,6 @@ namespace PowerBox2
                 byte[] fileContent = new byte[reader.UnconsumedBufferLength];
                 reader.ReadBytes(fileContent);
                 delegteReadAsync(fileContent);
-                Debag.Write("SP_H148");
             }
         }
 
@@ -169,7 +157,7 @@ namespace PowerBox2
                     {
                         // Create the DataWriter object and attach to OutputStream
                         dataWriteObject = new DataWriter(serialPort.OutputStream);
-                        Debag.Write("SP_H170");
+
                         //Launch the WriteAsync task to perform the write
                         WriteAsync(mas);
                         flag = true;
@@ -181,9 +169,8 @@ namespace PowerBox2
                 }
                 catch (Exception ex)
                 {
+                    Debag.Write(ex.Message);
                     _pool.Wait();
-                    //connection();
-                    //throw new Exception(ex.Message);
                 }
                 finally
                 {
@@ -206,14 +193,12 @@ namespace PowerBox2
 
                 // Load the text from the sendText input text box to the dataWriter object
                 dataWriteObject.WriteBytes(mas);
-                //Debag.Write("SP_H205");
-                //Task.Delay(-1).Wait(200);
+
                 // Launch an async task to complete the write operation
-                storeAsyncTask = dataWriteObject.StoreAsync().AsTask(); //0xc000000d
-                //Debag.Write("SP_H208");
-                //await storeAsyncTask;
+                storeAsyncTask = dataWriteObject.StoreAsync().AsTask();
+
+                //await storeAsyncTask; //0xc000000d, 0xc0000005 'Access violation'
                 storeAsyncTask.Wait();
-                //Debag.Write("SP_H210");
             }
             catch (Exception ex)
             {

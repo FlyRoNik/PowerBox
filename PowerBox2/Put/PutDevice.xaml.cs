@@ -50,7 +50,6 @@ namespace PowerBox2.Put
 
         private void waitingClosing()
         {
-            Debag.Write("Put53 ");
             try
             {
                 while (true)
@@ -67,7 +66,6 @@ namespace PowerBox2.Put
             {
                 throw new Exception(ex.Message);
             }
-            Debag.Write("Put70 ");
             dispatch(()=> { this.Frame.Navigate(typeof(Welcome), box); });
         }
 

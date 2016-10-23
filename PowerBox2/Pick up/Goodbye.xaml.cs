@@ -39,7 +39,6 @@ namespace PowerBox2.Pick_up
                 box = (Box)e.Parameter;
             }
             base.OnNavigatedTo(e);
-            Debag.Write("G42 ");
             Task thread = new Task(() => {
                 next();
             });
@@ -48,11 +47,9 @@ namespace PowerBox2.Pick_up
 
         private async void next()
         {
-            Debag.Write("G51 ");
             Task.Delay(-1).Wait(2000);
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                Debag.Write("G55 ");
                 this.Frame.Navigate(typeof(Put.Welcome), box);
             });
         }

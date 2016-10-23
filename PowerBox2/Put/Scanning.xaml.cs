@@ -48,7 +48,6 @@ namespace PowerBox2.Put
                 box = (Box)e.Parameter;
             }
             base.OnNavigatedTo(e);
-            Debag.Write("S51 ");
 
             Task thread = new Task(() => {
                 addUser();
@@ -60,7 +59,6 @@ namespace PowerBox2.Put
         {
             string status;
 
-            Debag.Write("S62 ");
             while (flag)
             {
                 
@@ -97,12 +95,10 @@ namespace PowerBox2.Put
                 {
                     inter = false;
                     _pool2.TryRelease();
-                    Debag.Write("S100 ");
                     return;
                 }
             }
             _pool2.TryRelease();
-            Debag.Write("S103 ");
             dispatch(() =>{ this.Frame.Navigate(typeof(PutDevice), box); });
         }
 
@@ -114,13 +110,10 @@ namespace PowerBox2.Put
             });
             string st = "";
 
-            Debag.Write("S117 ");
             _pool3.Wait();
             if (!inter)
             {
-                Debag.Write("S121 ");
                 st = box.scaner.addFingerPrint(box.numberCell, FingerPrintScaner.Privilege.USER, times);
-                Debag.Write("S123 ");
             }
             _pool3.TryRelease();
 
@@ -128,7 +121,6 @@ namespace PowerBox2.Put
             {
                 progress1.IsActive = false;
             });
-            Debag.Write("S131 ");
             return st;
         }
 
@@ -139,7 +131,6 @@ namespace PowerBox2.Put
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            Debag.Write("S142 ");
             try
             {
                 inter = true;
@@ -149,12 +140,10 @@ namespace PowerBox2.Put
                 }
             }
             catch (Exception) { }
-            Debag.Write("S152 ");
             _pool2.Wait();
 
             if (flag)
             {
-                Debag.Write("S157 ");
                 this.Frame.Navigate(typeof(СellSelection), box);
             }
         }

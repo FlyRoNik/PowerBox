@@ -51,7 +51,6 @@ namespace PowerBox2.Pick_up
 
         private void waitingClosing()
         {
-            Debag.Write("Pick54 ");
             try
             {
                 while (true)
@@ -68,7 +67,6 @@ namespace PowerBox2.Pick_up
             {
                 throw new Exception(ex.Message);
             }
-            Debag.Write("Pick71 ");
             dispatch(() => { this.Frame.Navigate(typeof(Goodbye), box); });
         }
 
