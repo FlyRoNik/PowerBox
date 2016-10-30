@@ -11,5 +11,11 @@
         <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="228,93,0,0" VerticalAlignment="Top" Click="button_Click"/>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="231,208,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
         <Button x:Name="button1" Content="init" HorizontalAlignment="Left" Margin="389,125,0,0" VerticalAlignment="Top" Click="button1_Click"/>
+        <Button x:Name="button2" Content="Init" HorizontalAlignment="Left" Margin="44,93,0,0" VerticalAlignment="Top" Click="button2_Click"/>
+        <Button x:Name="button3" Content="photo" HorizontalAlignment="Left" Margin="80,135,0,0" VerticalAlignment="Top" Click="button3_Click"/>
+        <Button x:Name="button4" Content="video" HorizontalAlignment="Left" Margin="80,186,0,0" VerticalAlignment="Top" Click="button4_Click"/>
+        <Button x:Name="button5" Content="Clous" HorizontalAlignment="Left" Margin="109,93,0,0" VerticalAlignment="Top" Click="button5_Click"/>
+        <Button x:Name="button6" Content="Detec" HorizontalAlignment="Left" Margin="80,228,0,0" VerticalAlignment="Top" Click="button6_Click"/>
+        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="86,298,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
     </Grid>
 </Page>

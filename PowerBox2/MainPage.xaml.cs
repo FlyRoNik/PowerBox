@@ -7,6 +7,7 @@ using Windows.Data.Xml.Dom;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,6 +26,7 @@ namespace PowerBox2
     public sealed partial class MainPage : Page
     {
         private Box box;
+        private Camera_FaceDetect camFaceDet;
 
         public MainPage()
         {
@@ -66,6 +68,55 @@ namespace PowerBox2
             {
                 textBlock.Text = ex.Message;
             }
+        }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            camFaceDet = new Camera_FaceDetect(delegteFaceDetect);
+
+            camFaceDet.Application_Resuming();
+        }
+
+        private async void button4_Click(object sender, RoutedEventArgs e)
+        {
+            await camFaceDet.TakePhotoAsync();
+        }
+
+        private async void button3_Click(object sender, RoutedEventArgs e)
+        {
+            if (!camFaceDet._isRecording)
+            {
+                await camFaceDet.StartRecordingAsync();
+            }
+            else
+            {
+                await camFaceDet.StopRecordingAsync();
+            }
+        }
+
+        private void button5_Click(object sender, RoutedEventArgs e)
+        {
+            camFaceDet.CleanupUi();
+        }
+
+        private async void button6_Click(object sender, RoutedEventArgs e)
+        {
+            if (camFaceDet._faceDetectionEffect == null || !camFaceDet._faceDetectionEffect.Enabled)
+            {
+                await camFaceDet.CreateFaceDetectionEffectAsync();
+            }
+            else
+            {
+                camFaceDet.CleanUpFaceDetectionEffectAsync();
+            }
+        }
+
+        public async void delegteFaceDetect(int count)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                textBlock.Text = count.ToString();
+            });
         }
     }
 }

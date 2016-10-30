@@ -35,7 +35,7 @@ namespace PowerBox2
             StorageFolder externalDevices = Windows.Storage.KnownFolders.RemovableDevices;
 
             // Get the first child folder, which represents the SD card.
-            sdCard = await (await externalDevices.GetFoldersAsync()).FirstOrDefault().CreateFolderAsync("TextFilesFolder");
+            //sdCard = await (await externalDevices.GetFoldersAsync()).FirstOrDefault().CreateFolderAsync("TextFilesFolder");
         }
 
         public async static void WriteCD(string someTextData)
