@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 
 namespace PowerBox2
 {
@@ -16,6 +18,8 @@ namespace PowerBox2
         private static StorageFolder localFolder;
         private static StorageFile helloFile;
         private static MySemaphore _pool = new MySemaphore(1, 1);
+        private static StorageFolder sdCard;
+        private static StorageFolder testFolder;
 
         public static void createdirectory()
         {
@@ -23,6 +27,30 @@ namespace PowerBox2
             myIsolatedStorage.CreateDirectory("TextFilesFolder");
             filename = "TextFilesFolder\\Samplefile";
             fileCount = 0;
+        }
+
+        public async static void createDirectorySD()
+        {
+            // Get the logical root folder for all external storage devices.
+            StorageFolder externalDevices = Windows.Storage.KnownFolders.RemovableDevices;
+
+            // Get the first child folder, which represents the SD card.
+            sdCard = await (await externalDevices.GetFoldersAsync()).FirstOrDefault().CreateFolderAsync("TextFilesFolder");
+        }
+
+        public async static void WriteCD(string someTextData)
+        {
+            if (sdCard != null)
+            {
+                // An SD card is present and the sdCard variable now contains a reference to it.
+                var testFile = await sdCard.CreateFileAsync("Test.txt");
+
+                await FileIO.AppendTextAsync(testFile, someTextData + Environment.NewLine);
+            }
+            else
+            {
+                // No SD card is present.
+            }
         }
 
         public static void Write(string someTextData)

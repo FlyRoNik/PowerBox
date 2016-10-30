@@ -42,6 +42,8 @@ namespace PowerBox2.Put
 
             box.mcu[box.numberCell].setPinDigital(6, 1); // открыть ячейку
 
+            Debag.WriteCD(box.numberCell.ToString());
+
             Task thread = new Task(() => {
                 waitingClosing();
             });

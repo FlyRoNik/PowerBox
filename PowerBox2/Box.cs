@@ -23,6 +23,7 @@ namespace PowerBox2
         public Box()
         {
             Debag.createdirectory();
+            Debag.createDirectorySD();
 
             try
             {
