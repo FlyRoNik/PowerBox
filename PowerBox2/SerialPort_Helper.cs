@@ -23,9 +23,12 @@ namespace PowerBox2
 
         private MySemaphore _pool = new MySemaphore(0, 1);
 
-        public SerialPort_Helper(Action<byte[]> delegteReadAsync)
+        private Debag debag;
+
+        public SerialPort_Helper(Action<byte[]> delegteReadAsync, Debag debag)
         {
             this.delegteReadAsync = delegteReadAsync;
+            this.debag = debag;
             connection();
         }
 
@@ -42,7 +45,7 @@ namespace PowerBox2
 
             if (myDevices.Count == 0)
             {
-                Debag.Write("Device not found...");
+                debag.WriteSD_Debag("Device not found...");
             }
 
             try
@@ -66,7 +69,7 @@ namespace PowerBox2
             }
             catch (Exception ex)
             {
-                Debag.Write(ex.Message);
+                debag.WriteSD_Debag(ex.Message);
             }
         }
 
@@ -92,7 +95,7 @@ namespace PowerBox2
                 if (ex.GetType().Name == "TaskCanceledException")
                 {
                     CloseDevice();
-                    Debag.Write("Reading task was cancelled, closing device and cleaning up");
+                    debag.WriteSD_Debag("Reading task was cancelled, closing device and cleaning up");
                 }
                 Task thread = new Task(connection);
                 thread.Start();
@@ -169,7 +172,7 @@ namespace PowerBox2
                 }
                 catch (Exception ex)
                 {
-                    Debag.Write(ex.Message);
+                    debag.WriteSD_Debag(ex.Message);
                     _pool.Wait();
                 }
                 finally
@@ -202,7 +205,7 @@ namespace PowerBox2
             }
             catch (Exception ex)
             {
-                Debag.Write(ex.Message);
+                debag.WriteSD_Debag(ex.Message);
             }
         }
     }

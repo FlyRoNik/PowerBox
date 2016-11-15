@@ -17,19 +17,19 @@ namespace PowerBox2
         public FingerPrintScaner scaner;
         public MCU[] mcu = new MCU[NUMBER_BOX];
         public Camera cam;
+        public Debag debag;
 
         public int numberCell;
 
         public Box()
         {
-            Debag.createdirectory();
-            Debag.createDirectorySD();
+            debag = new Debag();
 
             try
             {
                 Task thread = new Task(() =>
                 {
-                    scaner = new FingerPrintScaner(PIN_BLINK, PIN_RESET);
+                    scaner = new FingerPrintScaner(PIN_BLINK, PIN_RESET, debag);
                 });
                 thread.Start();
                 thread.Wait();

@@ -151,12 +151,12 @@ namespace PowerBox2
             ACK_TIMEOUT = 0x08 //Acquisition timeout 
         }
 
-        public FingerPrintScaner(int BLINK, int RESET)
+        public FingerPrintScaner(int BLINK, int RESET, Debag debag)
         {
             respon = false;
             error = false;
 
-            serialPort = new SerialPort_Helper(delegteReadAsync);
+            serialPort = new SerialPort_Helper(delegteReadAsync, debag);
 
             var gpio = GpioController.GetDefault();
 

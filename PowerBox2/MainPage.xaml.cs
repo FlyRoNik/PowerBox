@@ -118,5 +118,10 @@ namespace PowerBox2
                 textBlock.Text = count.ToString();
             });
         }
+
+        private void button7_Click(object sender, RoutedEventArgs e)
+        {
+            box.debag.dellFolderSD(Debag.ValueFolder.FolderDebags);
+        }
     }
 }
