@@ -31,15 +31,15 @@ namespace PowerBox2
         public MainPage()
         {
             this.InitializeComponent();
+        }
 
-            try
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter is Box)
             {
-                box = new Box();
+                box = (Box)e.Parameter;
             }
-            catch (Exception ex)
-            {
-                textBlock.Text = ex.Message;
-            }
+            base.OnNavigatedTo(e);
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -50,7 +50,7 @@ namespace PowerBox2
                 if (box.mcu[i].getDataMicrocontroller()[1] == 0)
                 {
                     int n = i + 1;
-                    textBlock.Text = "Ячейка №" + n + " не закрыта";
+                    textBlock.Text = "Ячейка №" + n + " не закрыта! Закройте пожалуйста.";
                     return;
                 }
             }
@@ -72,7 +72,7 @@ namespace PowerBox2
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            camFaceDet = new Camera_FaceDetect(delegteFaceDetect);
+            camFaceDet = new Camera_FaceDetect(delegteFaceDetect, box.debag);
 
             camFaceDet.Application_Resuming();
         }

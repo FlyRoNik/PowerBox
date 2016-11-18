@@ -67,9 +67,10 @@ namespace PowerBox2
 
         private Action<int> delegteFaceDetect;
 
-        public Camera_FaceDetect(Action<int> delegteFaceDetect)
+        public Camera_FaceDetect(Action<int> delegteFaceDetect, Debag debag)
         {
             this.delegteFaceDetect = delegteFaceDetect;
+            _captureFolder = debag.getFolderWatch();
         }
 
         #region Constructor, lifecycle and navigation
@@ -83,10 +84,10 @@ namespace PowerBox2
 
         public async void Application_Resuming()
         {
-            await SetupUiAsync();
+            SetupUiAsync();
 
             await InitializeCameraAsync();
-        }
+        } 
 
         #endregion Constructor, lifecycle and navigation
 
@@ -427,7 +428,7 @@ namespace PowerBox2
         /// Attempts to lock the page orientation, hide the StatusBar (on Phone) and registers event handlers for hardware buttons and orientation sensors
         /// </summary>
         /// <returns></returns>
-        private async Task SetupUiAsync()
+        private void SetupUiAsync()
         {
             // Populate orientation variables with the current state
             _displayOrientation = _displayInformation.CurrentOrientation;
@@ -436,9 +437,9 @@ namespace PowerBox2
                 _deviceOrientation = _orientationSensor.GetCurrentOrientation();
             }
 
-            var picturesLibrary = await StorageLibrary.GetLibraryAsync(KnownLibraryId.Pictures);
+            //var picturesLibrary = await StorageLibrary.GetLibraryAsync(KnownLibraryId.Pictures);
             // Fall back to the local app storage if the Pictures Library is not available
-            _captureFolder = picturesLibrary.SaveFolder ?? ApplicationData.Current.LocalFolder;
+            //_captureFolder = picturesLibrary.SaveFolder ?? ApplicationData.Current.LocalFolder;
         }
 
         /// <summary>

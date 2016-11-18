@@ -75,12 +75,25 @@ namespace PowerBox2.Put
 
         private async void scanning()
         {
+            FingerPrintScaner.User user = null;
             while (true)
             {
                 try
                 {
                     _pool2.Wait();
-                    box.numberCell = box.scaner.compareOneToMore().getID();
+                    user = box.scaner.compareOneToMore();
+                    if (user.getPrivilege() == FingerPrintScaner.Privilege.ADMIN)
+                    {
+                        await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        {
+                            this.Frame.Navigate(typeof(MainPage), box);
+                        });
+                        return;
+                    }
+                    else
+                    {
+                        box.numberCell = user.getID();
+                    }
                     _pool.Wait();
                     if (flag)
                     {

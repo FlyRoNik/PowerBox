@@ -58,7 +58,10 @@ namespace PowerBox2.Put
 
             for (int i = 0; i < user.Length; i++)
             {
-                buttons[user[i].getID()].IsEnabled = false;
+                if (user[i].getID() < 9)
+                {
+                    buttons[user[i].getID()].IsEnabled = false;
+                }
             }
         }
 

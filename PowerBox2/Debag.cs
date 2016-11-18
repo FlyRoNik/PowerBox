@@ -11,7 +11,7 @@ using Windows.Storage.Streams;
 
 namespace PowerBox2
 {
-    class Debag
+    public class Debag
     {
         private const string FOLDER_MAIN = "PowerBox";
         private const string FOLDER_CHECKS = "CHECKS";
@@ -30,8 +30,6 @@ namespace PowerBox2
         private int fileCountCheck;
         private int fileCountDebag;
 
-        private MySemaphore _pool = new MySemaphore(1, 1);
-
         public enum ValueFolder : byte
         {
             FolderMain = 0,
@@ -39,11 +37,6 @@ namespace PowerBox2
             FolderWatching = 2,
             FolderDebags = 3
         }
-
-        //private string filename;
-        //private int fileCount;
-        //private StorageFolder localFolder;
-        //private StorageFile helloFile;
 
         public Debag()
         {
@@ -177,45 +170,9 @@ namespace PowerBox2
             await FileIO.AppendTextAsync(FileDebag, someTextData + Environment.NewLine);
         }
 
-        //public void createdirectory()
-        //{
-        //    IsolatedStorageFile myIsolatedStorage = IsolatedStorageFile.GetUserStoreForApplication();
-        //    myIsolatedStorage.CreateDirectory("TextFilesFolder");
-        //    filename = "TextFilesFolder\\Samplefile";
-        //    fileCount = 0;
-        //}
-
-        //public void WriteSD_Debag(string someTextData)
-        //{
-        //    _pool.Wait();
-        //    IsolatedStorageFile myIsolatedStorage = IsolatedStorageFile.GetUserStoreForApplication();
-        //    using (StreamWriter writeFile = new StreamWriter(new IsolatedStorageFileStream(filename + fileCount+ "_" + someTextData + ".txt", FileMode.OpenOrCreate, FileAccess.Write, myIsolatedStorage)))
-        //    {
-        //        writeFile.Write(someTextData);
-        //        writeFile.Dispose();
-        //        fileCount++;
-        //    }
-        //    _pool.TryRelease();
-        //}
-
-        //public async void createdirectoryA()
-        //{
-        //    localFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("TextFilesFolder");
-        //    filename = "Samplefile.txt";
-        //    // создаем файл 
-        //    helloFile = await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
-        //}
-
-        //public async void WriteA(string someTextData)
-        //{
-        //    _pool.Wait();
-           
-        //    // если файл уже ранее был создан, то мы можем получить его через GetFileAsync()
-        //    //helloFile = await localFolder.GetFileAsync(filename);
-
-        //    // запись в файл
-        //    await FileIO.AppendTextAsync(helloFile, someTextData + Environment.NewLine);
-        //    _pool.TryRelease();
-        //}
+        public StorageFolder getFolderWatch()
+        {
+            return FolderWatching;
+        }
     }
 }
