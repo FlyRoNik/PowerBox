@@ -50,27 +50,26 @@ namespace PowerBox2.Put
             base.OnNavigatedTo(e);
 
             Task thread = new Task(() => {
-                addUser();
+                add(box.privilege);
             });
             thread.Start();
         }
 
-        private void addUser()
+        private void add(FingerPrintScaner.Privilege privilege)
         {
             string status;
 
             while (flag)
             {
-                
-                status = Progres(FingerPrintScaner.Times.First);
+                status = Progres(FingerPrintScaner.Times.First, privilege);
                 if (status == "Operation successfully")
                 {
                     dispatch(() => { textBlock1.Text = status; });
-                    status = Progres(FingerPrintScaner.Times.Second);
+                    status = Progres(FingerPrintScaner.Times.Second, privilege);
                     if (status == "Operation successfully")
                     {
                         dispatch(() => { textBlock1.Text = status; });
-                        status = Progres(FingerPrintScaner.Times.Third);
+                        status = Progres(FingerPrintScaner.Times.Third, privilege);
                         if (status == "Operation successfully")
                         {
                             dispatch(() => { textBlock1.Text = status; });
@@ -99,10 +98,17 @@ namespace PowerBox2.Put
                 }
             }
             _pool2.TryRelease();
-            dispatch(() =>{ this.Frame.Navigate(typeof(PutDevice), box); });
+            if (box.privilege == FingerPrintScaner.Privilege.USER)
+            {
+                dispatch(() =>{ this.Frame.Navigate(typeof(PutDevice), box); });
+            }
+            else
+            {
+                dispatch(() => { this.Frame.Navigate(typeof(MainPage), box); });
+            }
         }
 
-        private string Progres(FingerPrintScaner.Times times)
+        private string Progres(FingerPrintScaner.Times times, FingerPrintScaner.Privilege privilege)
         {
             dispatch(() =>
             {
@@ -113,7 +119,7 @@ namespace PowerBox2.Put
             _pool3.Wait();
             if (!inter)
             {
-                st = box.scaner.addFingerPrint(box.numberCell, FingerPrintScaner.Privilege.USER, times);
+                st = box.scaner.addFingerPrint(box.numberCell, privilege, times);
             }
             _pool3.TryRelease();
 

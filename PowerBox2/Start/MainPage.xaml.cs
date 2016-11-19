@@ -123,5 +123,11 @@ namespace PowerBox2
         {
             box.debag.dellFolderSD(Debag.ValueFolder.FolderDebags);
         }
+
+        private void button8_Click(object sender, RoutedEventArgs e)
+        {
+            box.addAdmin();
+            this.Frame.Navigate(typeof(Put.Scanning), box);
+        }
     }
 }

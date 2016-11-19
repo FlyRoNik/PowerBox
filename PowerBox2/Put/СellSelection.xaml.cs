@@ -68,6 +68,7 @@ namespace PowerBox2.Put
         private void button_Click(object sender, RoutedEventArgs e)
         {
             box.numberCell = ((Button)sender).TabIndex;
+            box.privilege = FingerPrintScaner.Privilege.USER;
             this.Frame.Navigate(typeof(Scanning), box);
         }
 

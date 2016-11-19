@@ -11,6 +11,7 @@ namespace PowerBox2
     class Box
     {
         private const int NUMBER_BOX = 8;
+        private const int ORIGIN_ADMIN = 20;
         private const int PIN_BLINK = 23;
         private const int PIN_RESET = 24;
 
@@ -20,6 +21,7 @@ namespace PowerBox2
         public Debag debag;
 
         public int numberCell;
+        public FingerPrintScaner.Privilege privilege;
 
         public Box()
         {
@@ -79,5 +81,29 @@ namespace PowerBox2
             }
         }
 
+        public void addAdmin()
+        {
+            FingerPrintScaner.User[] user = null;
+            try
+            {
+                user = scaner.getUserNumbersAndPrivilege();
+            }
+            catch (Exception ex)
+            {
+                debag.WriteSD_Debag(ex.Message);
+                return;
+            }
+
+            int num = user[user.Length - 1].getID();
+            if (num >= 20)
+            {
+                numberCell = ++num;
+            }
+            else
+            {
+                numberCell = ORIGIN_ADMIN;
+            }
+            privilege = FingerPrintScaner.Privilege.ADMIN;
+        }
     }
 }
