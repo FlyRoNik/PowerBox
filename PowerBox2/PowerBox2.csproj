@@ -105,6 +105,9 @@
     <Compile Include="Debag.cs" />
     <Compile Include="FingerPrintScaner.cs" />
     <Compile Include="I2C_Helper.cs" />
+    <Compile Include="Start\AreYouStillHere.xaml.cs">
+      <DependentUpon>AreYouStillHere.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Start\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
     </Compile>
@@ -156,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Start\AreYouStillHere.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Start\Authorization.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

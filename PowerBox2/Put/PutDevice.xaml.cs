@@ -75,6 +75,5 @@ namespace PowerBox2.Put
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, agileCallback);
         }
-
     }
 }

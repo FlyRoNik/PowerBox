@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using Windows.Data.Xml.Dom;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -31,6 +32,7 @@ namespace PowerBox2
         public MainPage()
         {
             this.InitializeComponent();
+            this.NavigationCacheMode = NavigationCacheMode.Enabled; //сохранение состояния страницы
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -128,6 +130,11 @@ namespace PowerBox2
         {
             box.addAdmin();
             this.Frame.Navigate(typeof(Put.Scanning), box);
+        }
+
+        private void button9_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Start.AreYouStillHere), box);
         }
     }
 }
