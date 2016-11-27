@@ -5,20 +5,71 @@
     xmlns:local="using:PowerBox2.Start"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Height="480" Width="800">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="228,93,0,0" VerticalAlignment="Top" Click="button_Click"/>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="231,208,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
-        <Button x:Name="button1" Content="init" HorizontalAlignment="Left" Margin="389,125,0,0" VerticalAlignment="Top" Click="button1_Click"/>
-        <Button x:Name="button2" Content="Init" HorizontalAlignment="Left" Margin="44,93,0,0" VerticalAlignment="Top" Click="button2_Click"/>
-        <Button x:Name="button3" Content="photo" HorizontalAlignment="Left" Margin="80,135,0,0" VerticalAlignment="Top" Click="button3_Click"/>
-        <Button x:Name="button4" Content="video" HorizontalAlignment="Left" Margin="80,186,0,0" VerticalAlignment="Top" Click="button4_Click"/>
-        <Button x:Name="button5" Content="Clous" HorizontalAlignment="Left" Margin="109,93,0,0" VerticalAlignment="Top" Click="button5_Click"/>
-        <Button x:Name="button6" Content="Detec" HorizontalAlignment="Left" Margin="80,228,0,0" VerticalAlignment="Top" Click="button6_Click"/>
-        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="86,298,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
-        <Button x:Name="button7" Content="Dell" HorizontalAlignment="Left" Margin="389,186,0,0" VerticalAlignment="Top" Click="button7_Click"/>
-        <Button x:Name="button8" Content="AddAdmin" HorizontalAlignment="Left" Margin="257,260,0,0" VerticalAlignment="Top" Click="button8_Click"/>
-        <Button x:Name="button9" Content="Button" HorizontalAlignment="Left" Margin="137,292,0,0" VerticalAlignment="Top" Click="button9_Click"/>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="0,0,0,0">
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Button x:Name="button" Content="Continue"  Click="button_Click" Height="30" Width="100"/>
+                <TextBlock x:Name="textBlock" Text="TextBlock"/>
+                <Button x:Name="button1" Content="init" Click="button1_Click"/>
+                <Button x:Name="button2" Content="Init" Click="button2_Click"/>
+                <Button x:Name="button3" Content="photo" Click="button3_Click"/>
+                <Button x:Name="button4" Content="video" Click="button4_Click"/>
+                <Button x:Name="button5" Content="Clous" Click="button5_Click"/>
+                <Button x:Name="button6" Content="Detec" Click="button6_Click"/>
+                <TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text=""/>
+                <Button x:Name="button7" Content="Dell" Click="button7_Click"/>
+                <Button x:Name="button9" Content="AreYouStillHere" Click="button9_Click"/>
+                <StackPanel>
+                    <TextBlock Text="Finger Print Scaner" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <Grid>
+                        <StackPanel HorizontalAlignment="Center" Margin="-570,0,0,0" VerticalAlignment="Center">
+                            <Button x:Name="resetScan" Content="Reset Scaner" Click="resetScan_Click" Height="30" Width="160" HorizontalAlignment="Center" Margin="0,10,0,10"/>
+                            <Button x:Name="blinkScan" Content="Blink Scaner" Click="blinkScan_Click" Height="30" Width="160" HorizontalAlignment="Center" Margin="0,10,0,10"/>
+                            <Button x:Name="waitScan" Content="Wait Scaner" Click="waitScan_Click" Height="30" Width="160" HorizontalAlignment="Center" Margin="0,10,0,10"/>
+                            <StackPanel Width="160" HorizontalAlignment="Center">
+                                <TextBlock Text="Allow Same Prints?" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30"/>
+                                <Grid Height="50">
+                                    <Button x:Name="allowSamePrints" Content="Yes" Click="allowSamePrints_Click" Height="30" Width="50" HorizontalAlignment="Left" Margin="0,10,0,10"/>
+                                    <Button x:Name="prohibitSamePrints" Content="No" Click="prohibitSamePrints_Click" Height="30" Width="50" HorizontalAlignment="Right" Margin="0,10,0,10"/>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid>
+                                <TextBox x:Name="textBox" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="0" Height="30" VerticalAlignment="Top" Margin="10,10,10,10"/>
+                                <StackPanel HorizontalAlignment="Center" Margin="-190,50,0,0">
+                                    <ComboBox x:Name="privilege" Height="30" Width="160" HorizontalAlignment="Right" Margin="10,10,10,0" PlaceholderText="Privilege">
+                                    </ComboBox>
+                                    <Button x:Name="addPerson" Content="Add Person" Click="addPerson_Click" Height="30" Width="160" HorizontalAlignment="Left" Margin="10,0,10,10"/>
+                                    <Button x:Name="dellPerson" Content="Delete Person" Click="dellPerson_Click" Height="30" Width="160" Margin="10,10,10,10"/>
+                                    <Button x:Name="dellAll" Content="Delete All Person" Click="dellAll_Click" Height="30" Width="160" Margin="10,10,10,10"/>
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Center" Margin="190,50,0,0">
+                                    <Button x:Name="compareOneToOne" Content="Compare 1:1" Click="compareOneToOne_Click" Height="30" Width="160" Margin="10,10,10,10"/>
+                                    <Button x:Name="getPrivilagePerson" Content="Get Privilage Person" Click="getPrivilagePerson_Click" Height="30" Width="160" Margin="10,10,10,10"/>
+                                    <Button x:Name="setComparisonLevel" Content="Set Comparison &#xD;&#xA;Level" Click="setComparisonLevel_Click" Height="50" Width="160" Margin="10,10,10,10"/>
+                                    <Button x:Name="setTimeOut" Content="Set Time Out" Click="setTimeOut_Click" Height="30" Width="160" Margin="10,10,10,10"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Margin="570,0,0,0" VerticalAlignment="Center">
+                            <Button x:Name="getComparisonLevel" Content="Get Comparison &#xD;&#xA;Level" Click="getComparisonLevel_Click" Height="50" Width="160" Margin="10,10,10,10"/>
+                            <Button x:Name="getPrivilageAndIdAllPerson" Content="Get Privilage and&#xD;&#xA; ID All Person" Click="getPrivilageAndIdAllPerson_Click" Height="50" Width="160" Margin="10,10,10,10"/>
+                            <Button x:Name="compareOwnToMore" Content="Compare 1:N" Click="compareOwnToMore_Click" Height="30" Width="160" Margin="10,10,10,10"/>
+                            <Button x:Name="getTimeOut" Content="Get Time Out" Click="getTimeOut_Click" Height="30" Width="160" Margin="10,10,10,10"/>
+                            <Button x:Name="getNumberPersons" Content="Get Number Persons" Click="getNumberPersons_Click" Height="30" Width="160" Margin="10,10,10,10"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock x:Name="message" TextWrapping="Wrap" Text="Massage" Height="30" Margin="10,10,10,10"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="MCU" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <ComboBox x:Name="comboBox" Height="30" Width="150" ItemsSource="{Binding}"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

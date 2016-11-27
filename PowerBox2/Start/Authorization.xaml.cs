@@ -80,7 +80,7 @@ namespace PowerBox2.Start
         {
             try
             {
-                FingerPrintScaner.User user = null;
+                FingerPrintScaner.Person user = null;
                 try
                 {
                     user = box.scaner.compareOneToMore();

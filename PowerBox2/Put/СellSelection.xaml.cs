@@ -40,7 +40,7 @@ namespace PowerBox2.Put
             }
             base.OnNavigatedTo(e);
 
-            FingerPrintScaner.User[] user = null;
+            FingerPrintScaner.Person[] user = null;
             try
             {
                 user = box.scaner.getUserNumbersAndPrivilege();

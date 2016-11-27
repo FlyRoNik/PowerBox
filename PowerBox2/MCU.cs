@@ -38,6 +38,11 @@ namespace PowerBox2
             }
         }
 
+        public int getI2C_Slave_Address()
+        {
+            return I2C_Slave_Address;
+        }
+
         private void waitResponse(int time)
         {
             Task thread = new Task(() => {

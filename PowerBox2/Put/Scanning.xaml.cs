@@ -32,6 +32,8 @@ namespace PowerBox2.Put
         private MySemaphore _pool2 = new MySemaphore(0, 1);
         private MySemaphore _pool3 = new MySemaphore(1, 1);
 
+        private Type previousPageType;
+
         public Scanning()
         {
             this.InitializeComponent();
@@ -47,12 +49,15 @@ namespace PowerBox2.Put
             {
                 box = (Box)e.Parameter;
             }
-            base.OnNavigatedTo(e);
+
+            previousPageType = Frame.BackStack.Last().SourcePageType;
 
             Task thread = new Task(() => {
                 add(box.privilege);
             });
             thread.Start();
+
+            base.OnNavigatedTo(e);
         }
 
         private void add(FingerPrintScaner.Privilege privilege)
@@ -98,13 +103,14 @@ namespace PowerBox2.Put
                 }
             }
             _pool2.TryRelease();
-            if (box.privilege == FingerPrintScaner.Privilege.USER)
+
+            if (previousPageType != typeof(СellSelection))
             {
-                dispatch(() =>{ this.Frame.Navigate(typeof(PutDevice), box); });
+                dispatch(() => { this.Frame.Navigate(previousPageType, box); });
             }
             else
             {
-                dispatch(() => { this.Frame.Navigate(typeof(MainPage), box); });
+                dispatch(() => { this.Frame.Navigate(typeof(PutDevice), box); });
             }
         }
 
@@ -150,7 +156,14 @@ namespace PowerBox2.Put
 
             if (flag)
             {
-                this.Frame.Navigate(typeof(СellSelection), box);
+                if (previousPageType != typeof(СellSelection))
+                {
+                    this.Frame.Navigate(previousPageType, box);
+                }
+                else
+                {
+                    this.Frame.Navigate(typeof(СellSelection), box);
+                }
             }
         }
     }

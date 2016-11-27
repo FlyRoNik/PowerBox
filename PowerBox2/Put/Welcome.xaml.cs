@@ -75,7 +75,7 @@ namespace PowerBox2.Put
 
         private async void scanning()
         {
-            FingerPrintScaner.User user = null;
+            FingerPrintScaner.Person user = null;
             while (true)
             {
                 try

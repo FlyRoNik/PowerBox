@@ -80,30 +80,5 @@ namespace PowerBox2
                 throw new Exception("Camera: " + ex.Message);
             }
         }
-
-        public void addAdmin()
-        {
-            FingerPrintScaner.User[] user = null;
-            try
-            {
-                user = scaner.getUserNumbersAndPrivilege();
-            }
-            catch (Exception ex)
-            {
-                debag.WriteSD_Debag(ex.Message);
-                return;
-            }
-
-            int num = user[user.Length - 1].getID();
-            if (num >= 20)
-            {
-                numberCell = ++num;
-            }
-            else
-            {
-                numberCell = ORIGIN_ADMIN;
-            }
-            privilege = FingerPrintScaner.Privilege.ADMIN;
-        }
     }
 }

@@ -28,12 +28,12 @@ namespace PowerBox2
         private MySemaphore _pool2 = new MySemaphore(0, 1);
         private MySemaphore _pool3 = new MySemaphore(0, 1);
 
-        public class User
+        public class Person
         {
             private int ID;
             private Privilege privilege;
 
-            public User(int ID, Privilege privilege)
+            public Person(int ID, Privilege privilege)
             {
                 this.ID = ID;
                 this.privilege = privilege;
@@ -55,7 +55,7 @@ namespace PowerBox2
             }
         }
 
-        private class UserID
+        private class PersonID
         {
             private int ID;
 
@@ -64,7 +64,7 @@ namespace PowerBox2
 
             private bool HexOrDec;
 
-            public UserID(int ID, bool type)
+            public PersonID(int ID, bool type)
             {
                 this.ID = ID;
 
@@ -82,7 +82,7 @@ namespace PowerBox2
                 }
             }
 
-            public UserID(byte highID, byte lowID, bool type)
+            public PersonID(byte highID, byte lowID, bool type)
             {
                 this.lowID = lowID;
                 this.highID = highID;
@@ -345,7 +345,7 @@ namespace PowerBox2
 
         public string addFingerPrint(int ID, Privilege privilege, Times times)
         {
-            UserID userId = new UserID(ID, true);
+            PersonID userId = new PersonID(ID, true);
             send(new byte[] { 0xF5, (byte)times, userId.getHighID(), userId.getLowID(), (byte)privilege, 0x00, 0x00, 0xF5 });
             waitResponse(TIME_RESPON + getTimeRespon());
             return response();
@@ -371,7 +371,7 @@ namespace PowerBox2
 
         public string deleteUser(int ID)
         {
-            UserID userID = new UserID(ID, true);
+            PersonID userID = new PersonID(ID, true);
 
             send(new byte[] { 0xF5, 0x04, userID.getHighID(), userID.getLowID(), 0x00, 0x00, 0x00, 0xF5 });
 
@@ -395,20 +395,20 @@ namespace PowerBox2
 
             waitResponse(TIME_RESPON);
 
-            UserID userID = new UserID(bytesRead[2], bytesRead[3], false);
+            PersonID userID = new PersonID(bytesRead[2], bytesRead[3], false);
             return userID.getID();
         }
 
         public string compareOneToOne(int ID)
         {
-            UserID userID = new UserID(ID, true);
+            PersonID userID = new PersonID(ID, true);
             send(new byte[] { 0xF5, 0x0B, userID.getHighID(), userID.getLowID(), 0x00, 0x00, 0x00, 0xF5 });
 
             waitResponse(TIME_RESPON + getTimeRespon());
             return response();
         }
 
-        public User compareOneToMore()
+        public Person compareOneToMore()
         {
             send(new byte[] { 0xF5, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF5 });
 
@@ -419,14 +419,14 @@ namespace PowerBox2
             }
             else
             {
-                UserID userId = new UserID(bytesRead[2], bytesRead[3], false);
-                return new User(userId.getID(), (Privilege)bytesRead[4]);
+                PersonID userId = new PersonID(bytesRead[2], bytesRead[3], false);
+                return new Person(userId.getID(), (Privilege)bytesRead[4]);
             }
         }
 
         public Privilege getUserPrivilege(int ID)
         {
-            UserID userID = new UserID(ID, true);
+            PersonID userID = new PersonID(ID, true);
             send(new byte[] { 0xF5, 0x0A, userID.getHighID(), userID.getLowID(), 0x00, 0x00, 0x00, 0xF5 });
 
             waitResponse(TIME_RESPON);
@@ -465,7 +465,7 @@ namespace PowerBox2
             return bytesRead[3];
         }
 
-        public User[] getUserNumbersAndPrivilege()
+        public Person[] getUserNumbersAndPrivilege()
         {
             send(new byte[] { 0xF5, 0x2B, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF5 });
             waitResponse(TIME_RESPON);
@@ -476,13 +476,13 @@ namespace PowerBox2
             }
             else
             {
-                User[] users = new User[bytesRead[10]];
+                Person[] users = new Person[bytesRead[10]];
 
                 int disp = 11;
                 for (int i = 0; i < users.Length; i++)
                 {
-                    UserID userId = new UserID(bytesRead[disp], bytesRead[disp + 1], false);
-                    users[i] = new User(userId.getID(), (Privilege)bytesRead[disp + 2]);
+                    PersonID userId = new PersonID(bytesRead[disp], bytesRead[disp + 1], false);
+                    users[i] = new Person(userId.getID(), (Privilege)bytesRead[disp + 2]);
                     disp += 3;
                 }
                 return users;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -33,6 +34,13 @@ namespace PowerBox2
         {
             this.InitializeComponent();
             this.NavigationCacheMode = NavigationCacheMode.Enabled; //сохранение состояния страницы
+
+            //ObservableCollection<FontFamily> Address = new ObservableCollection<FontFamily>();
+            //for (int i = 0; i < box.mcu.Length; i++)
+            //{
+            //    Address.Add(new FontFamily(box.mcu[i].getI2C_Slave_Address().ToString()));
+            //}
+            //comboBox.DataContext = Address;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -41,7 +49,25 @@ namespace PowerBox2
             {
                 box = (Box)e.Parameter;
             }
+            init();
+                        
             base.OnNavigatedTo(e);
+        }
+
+        private void init()
+        {
+            if (box.scaner.getRepeatMode() == FingerPrintScaner.Value.ON)
+            {
+                allowSamePrints.IsEnabled = false;
+            }
+            else
+            {
+                prohibitSamePrints.IsEnabled = false;
+            }
+
+            privilege.Items.Add(FingerPrintScaner.Privilege.USER);
+            privilege.Items.Add(FingerPrintScaner.Privilege.ADMIN);
+            privilege.Items.Add(FingerPrintScaner.Privilege.VIP);
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -126,15 +152,218 @@ namespace PowerBox2
             box.debag.dellFolderSD(Debag.ValueFolder.FolderDebags);
         }
 
-        private void button8_Click(object sender, RoutedEventArgs e)
-        {
-            box.addAdmin();
-            this.Frame.Navigate(typeof(Put.Scanning), box);
-        }
-
         private void button9_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(Start.AreYouStillHere), box);
+        }
+
+        private void resetScan_Click(object sender, RoutedEventArgs e)
+        {
+            if (box.scaner.getReset() == FingerPrintScaner.Value.ON)
+            {
+                box.scaner.setReset(FingerPrintScaner.Value.OFF);
+            }
+            else
+            {
+                box.scaner.setReset(FingerPrintScaner.Value.ON);
+            }
+        }
+
+        private void blinkScan_Click(object sender, RoutedEventArgs e)
+        {
+            if (box.scaner.getBlink() == FingerPrintScaner.Value.ON)
+            {
+                box.scaner.setBlink(FingerPrintScaner.Value.OFF);
+            }
+            else
+            {
+                box.scaner.setBlink(FingerPrintScaner.Value.ON);
+            }
+        }
+
+        private void waitScan_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.sleep();
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void allowSamePrints_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.setRepeatMode(FingerPrintScaner.Value.ON);
+                prohibitSamePrints.IsEnabled = true;
+                allowSamePrints.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void prohibitSamePrints_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.setRepeatMode(FingerPrintScaner.Value.OFF);
+                prohibitSamePrints.IsEnabled = false;
+                allowSamePrints.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void addPerson_Click(object sender, RoutedEventArgs e)
+        {
+            box.privilege = (FingerPrintScaner.Privilege)privilege.SelectedItem;
+            box.numberCell = Int32.Parse(textBox.Text);
+            this.Frame.Navigate(typeof(Put.Scanning), box);
+        }
+
+        private void dellPerson_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.deleteUser(Int32.Parse(textBox.Text));
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void dellAll_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.deleteAllUser();
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void compareOneToOne_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.compareOneToOne(Int32.Parse(textBox.Text));
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void getPrivilagePerson_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.getUserPrivilege(Int32.Parse(textBox.Text)).ToString();
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void setComparisonLevel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.setComparisonLevel(Int32.Parse(textBox.Text));
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void setTimeOut_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.setTimeoutValue(Int32.Parse(textBox.Text));
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void getComparisonLevel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.getComparisonLevel().ToString();
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void getPrivilageAndIdAllPerson_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                FingerPrintScaner.Person[] users = box.scaner.getUserNumbersAndPrivilege();
+                message.Text = "";
+                for (int i = 0; i < users.Length; i++)
+                {
+                    message.Text += users[i].ToString() + "| ";
+                }
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void compareOwnToMore_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                FingerPrintScaner.Person person = box.scaner.compareOneToMore();
+                message.Text = person.getID().ToString() + ": " + person.getPrivilege().ToString();
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void getTimeOut_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.getTimeoutValue().ToString();
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
+        }
+
+        private void getNumberPersons_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                message.Text = box.scaner.getNumberOfUsers().ToString();
+            }
+            catch (Exception ex)
+            {
+                message.Text = ex.Message;
+            }
         }
     }
 }
