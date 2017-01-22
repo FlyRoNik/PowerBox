@@ -30,6 +30,7 @@ namespace PowerBox2
         private Box box;
         private Camera_FaceDetect camFaceDet;
 
+        #region Constructor, lifecycle and navigation
         public MainPage()
         {
             this.InitializeComponent();
@@ -41,6 +42,8 @@ namespace PowerBox2
             //    Address.Add(new FontFamily(box.mcu[i].getI2C_Slave_Address().ToString()));
             //}
             //comboBox.DataContext = Address;
+
+            
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -68,7 +71,17 @@ namespace PowerBox2
             privilege.Items.Add(FingerPrintScaner.Privilege.USER);
             privilege.Items.Add(FingerPrintScaner.Privilege.ADMIN);
             privilege.Items.Add(FingerPrintScaner.Privilege.VIP);
+
+            box.cam.Cleanup();
+            box.cam = new Camera(box.debag, 
+                delegatePrint, 
+                delegateFailed, 
+                delegateRecordLimitExceeded);
+            SetInitButtonVisibility(Action.ENABLE);
+            SetVideoButtonVisibility(Action.DISABLE);
         }
+
+        #endregion Constructor, lifecycle and navigation
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
@@ -82,6 +95,8 @@ namespace PowerBox2
                     return;
                 }
             }
+
+            box.cam = new Camera(box.debag);
 
             this.Frame.Navigate(typeof(Put.Welcome), box);
         }
@@ -107,11 +122,6 @@ namespace PowerBox2
 
         private async void button4_Click(object sender, RoutedEventArgs e)
         {
-            await camFaceDet.TakePhotoAsync();
-        }
-
-        private async void button3_Click(object sender, RoutedEventArgs e)
-        {
             if (!camFaceDet._isRecording)
             {
                 await camFaceDet.StartRecordingAsync();
@@ -120,6 +130,11 @@ namespace PowerBox2
             {
                 await camFaceDet.StopRecordingAsync();
             }
+        }
+
+        private async void button3_Click(object sender, RoutedEventArgs e)
+        {
+            await camFaceDet.TakePhotoAsync();
         }
 
         private void button5_Click(object sender, RoutedEventArgs e)
@@ -156,6 +171,8 @@ namespace PowerBox2
         {
             this.Frame.Navigate(typeof(Start.AreYouStillHere), box);
         }
+
+        #region MCU
 
         private void resetScan_Click(object sender, RoutedEventArgs e)
         {
@@ -365,5 +382,203 @@ namespace PowerBox2
                 message.Text = ex.Message;
             }
         }
+        #endregion MCU
+
+        #region web camera and face detection
+        #region HELPER_FUNCTIONS
+        enum Action
+        {
+            ENABLE,
+            DISABLE
+        }
+        /// <summary>
+        /// Helper function to enable or disable Initialization buttons
+        /// </summary>
+        /// <param name="action">enum Action</param>
+        private void SetInitButtonVisibility(Action action)
+        {
+            if (action == Action.ENABLE)
+            {
+                video_init.IsEnabled = true;
+            }
+            else
+            {
+                video_init.IsEnabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Helper function to enable or disable video related buttons (TakePhoto, Start Video Record)
+        /// </summary>
+        /// <param name="action">enum Action</param>
+        private void SetVideoButtonVisibility(Action action)
+        {
+            if (action == Action.ENABLE)
+            {
+                takePhoto.IsEnabled = true;
+                takePhoto.Visibility = Visibility.Visible;
+
+                recordVideo.IsEnabled = true;
+                recordVideo.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                takePhoto.IsEnabled = false;
+                takePhoto.Visibility = Visibility.Collapsed;
+
+                recordVideo.IsEnabled = false;
+                recordVideo.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        public async void delegatePrint(string status)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                this.status.Text = status.ToString();
+            });
+        }
+
+        public async void delegateFailed()
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                SetInitButtonVisibility(Action.DISABLE);
+                SetVideoButtonVisibility(Action.DISABLE);
+                this.status.Text = status.ToString();
+            });
+        }
+
+        public async void delegateRecordLimitExceeded()
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                recordVideo.Content = "Start Video Record";
+                this.status.Text = status.ToString();
+            });
+        }
+        #endregion
+
+        private async void initVideo_Click(object sender, RoutedEventArgs e)
+        {
+            // Disable all buttons until initialization completes
+
+            SetInitButtonVisibility(Action.DISABLE);
+            SetVideoButtonVisibility(Action.DISABLE);
+
+            if (box.cam.getMediaCapture() != null)
+            {
+                // Cleanup MediaCapture object
+                if (box.cam.getIsPreviewing())
+                {
+                    captureImage.Source = null;
+                    playbackElement.Source = null;
+                }
+                if (box.cam.getIsRecording())
+                {
+                    recordVideo.Content = "Start Video Record";
+                }
+            }
+
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                box.cam.initVideo(previewElement);
+            });
+
+            // Start Preview                
+            //previewElement.Source = box.cam.getMediaCapture();
+            //await box.cam.getMediaCapture().StartPreviewAsync();
+
+            // Enable buttons for video and photo capture
+            SetVideoButtonVisibility(Action.ENABLE);
+        }
+
+        private void cleanup_Click(object sender, RoutedEventArgs e)
+        {
+            if (box.cam.getMediaCapture() != null)
+            {
+                // Cleanup MediaCapture object
+                if (box.cam.getIsPreviewing())
+                {
+                    captureImage.Source = null;
+                    playbackElement.Source = null;
+                }
+                if (box.cam.getIsRecording())
+                {
+                    recordVideo.Content = "Start Video Record";
+                }
+            }
+
+            SetInitButtonVisibility(Action.DISABLE);
+            SetVideoButtonVisibility(Action.DISABLE);
+            box.cam.Cleanup();
+            SetInitButtonVisibility(Action.ENABLE);
+        }
+
+        private void takePhoto_Click(object sender, RoutedEventArgs e)
+        {
+            takePhoto.IsEnabled = false;
+            recordVideo.IsEnabled = false;
+
+            captureImage.Source = box.cam.getBitmap();
+
+            takePhoto.IsEnabled = true;
+            recordVideo.IsEnabled = true;
+        }
+
+        private void recordVideo_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                takePhoto.IsEnabled = false;
+                recordVideo.IsEnabled = false;
+                playbackElement.Source = null;
+
+                if (recordVideo.Content.ToString() == "Start Video Record")
+                {
+                    takePhoto.IsEnabled = false;
+                    status.Text = "Initialize video recording";
+
+                    box.cam.recordVideo();
+
+                    recordVideo.IsEnabled = true;
+                    recordVideo.Content = "Stop Video Record";
+                }
+                else
+                {
+                    takePhoto.IsEnabled = true;
+
+                    box.cam.recordVideo();
+
+                    var stream = box.cam.getStream();
+
+                    StorageFile recordStorageFile = box.cam.getRecordStorageFile();
+
+                    playbackElement.AutoPlay = true;
+                    playbackElement.SetSource(stream, recordStorageFile.FileType);
+                    playbackElement.Play();
+                    status.Text = "Playing recorded video" + recordStorageFile.Path;
+                    recordVideo.Content = "Start Video Record";
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is System.UnauthorizedAccessException)
+                {
+                    status.Text = "Unable to play recorded video; video recorded successfully to: " + box.cam.getRecordStorageFile().Path;
+                    recordVideo.Content = "Start Video Record";
+                }
+                else
+                {
+                    status.Text = ex.Message;
+                }
+            }
+            finally
+            {
+                recordVideo.IsEnabled = true;
+            }
+        }
+
+        #endregion web camera and face detection
     }
 }

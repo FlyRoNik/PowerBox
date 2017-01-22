@@ -65,11 +65,11 @@ namespace PowerBox2
 
         public FaceDetectionEffect _faceDetectionEffect;
 
-        private Action<int> delegteFaceDetect;
+        private Action<int> delegateFaceDetect;
 
-        public Camera_FaceDetect(Action<int> delegteFaceDetect, Debag debag)
+        public Camera_FaceDetect(Action<int> delegateFaceDetect, Debag debag)
         {
-            this.delegteFaceDetect = delegteFaceDetect;
+            this.delegateFaceDetect = delegateFaceDetect;
             _captureFolder = debag.getFolderWatch();
         }
 
@@ -526,7 +526,7 @@ namespace PowerBox2
             // Update the face detection bounding box canvas orientation
             //SetFacesCanvasRotation();
 
-            delegteFaceDetect(faces.Count);
+            delegateFaceDetect(faces.Count);
         }
 
         #endregion

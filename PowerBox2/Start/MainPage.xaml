@@ -13,11 +13,11 @@
             <StackPanel>
                 <Button x:Name="button" Content="Continue"  Click="button_Click" Height="30" Width="100"/>
                 <TextBlock x:Name="textBlock" Text="TextBlock"/>
-                <Button x:Name="button1" Content="init" Click="button1_Click"/>
-                <Button x:Name="button2" Content="Init" Click="button2_Click"/>
+                <Button x:Name="button1" Content="init_box" Click="button1_Click"/>
+                <Button x:Name="button2" Content="Init_webCam" Click="button2_Click"/>
                 <Button x:Name="button3" Content="photo" Click="button3_Click"/>
                 <Button x:Name="button4" Content="video" Click="button4_Click"/>
-                <Button x:Name="button5" Content="Clous" Click="button5_Click"/>
+                <Button x:Name="button5" Content="Close" Click="button5_Click"/>
                 <Button x:Name="button6" Content="Detec" Click="button6_Click"/>
                 <TextBlock x:Name="textBlock1" TextWrapping="Wrap" Text=""/>
                 <Button x:Name="button7" Content="Dell" Click="button7_Click"/>
@@ -68,6 +68,64 @@
                 <StackPanel>
                     <TextBlock Text="MCU" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"/>
                     <ComboBox x:Name="comboBox" Height="30" Width="150" ItemsSource="{Binding}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Explorer" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Web Camera" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <Grid>
+                        <Grid.ChildrenTransitions>
+                            <TransitionCollection>
+                                <!--<EntranceThemeTransition/>-->
+                                <RepositionThemeTransition/>
+                            </TransitionCollection>
+                        </Grid.ChildrenTransitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="1" x:Name="ContentRoot" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                            <Button x:Name="video_init" Content="Initialize Audio/Video" Click="initVideo_Click" HorizontalAlignment="Left" Margin="0,0,30,0" Width="180"/>
+                            <Button x:Name="cleanup" Content="Close Camera" Click="cleanup_Click" Width="120"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" x:Name="ContentRootActions" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="12,0,12,0">
+                            <Button x:Name="takePhoto" Content="Take Photo" Click="takePhoto_Click" Margin="0,20,30,0" Width="120" IsEnabled="False" Visibility="Collapsed"/>
+                            <Button x:Name="recordVideo" Content="Start Video Record" Click="recordVideo_Click" Margin="0,20,0,0" Width="150" IsEnabled="False" Visibility="Collapsed"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,10">
+                            <StackPanel>
+                                <TextBlock Name="PreviewTitle" Grid.Row="0" Grid.Column="0" Text="Preview"  Height="30" HorizontalAlignment="Center" Margin="0,20,0,0" Visibility="Visible"/>
+                                <Canvas Name="PreviewCanvas" Grid.Row="1" Grid.Column="0" Width="200" Height="200" Background="Gray"  Margin="0,0,0,0" Visibility="Visible">
+                                    <CaptureElement x:Name="previewElement" Width="200" Height="200" HorizontalAlignment="Left" Visibility="Visible"/>
+                                </Canvas>
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Name="ImageTitle" Grid.Row="0" Grid.Column="1" Text="Last captured photo" Height="30" HorizontalAlignment="Center" Margin="0,20,0,0" Visibility="Visible"/>
+                                <Canvas Name="PhotoCanvas" Grid.Row="1" Grid.Column="1" Width="200" Height="200" Background="Gray"  Margin="20,0,0,0" Visibility="Visible">
+                                    <Image x:Name="captureImage" Width="200" Height="200" Visibility="Visible"/>
+                                </Canvas>
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Name="VideoTitle" Grid.Row="0" Grid.Column="2" Text="Last Recorded Video" Height="30" HorizontalAlignment="Center" Margin="0,20,0,0" Visibility="Visible"/>
+                                <Canvas Name="VideoCanvas" Grid.Row="1" Grid.Column="2" Width="200" Height="200" Background="Gray" Margin="20,0,0,0" Visibility="Visible">
+                                    <MediaElement x:Name="playbackElement" Width="200" Height="200" Visibility="Visible"/>
+                                </Canvas>
+                            </StackPanel>
+                        </StackPanel>
+                        <TextBlock Grid.Row="4" Text="Status" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="19,-10,0,0"/>
+                        <ScrollViewer Grid.Row="5" Margin="12,10,12,0" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                            <TextBox
+				                x:Name="status" TextWrapping="Wrap" IsReadOnly="True" Height="60" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" 
+				                ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                        </ScrollViewer>
+                    </Grid>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

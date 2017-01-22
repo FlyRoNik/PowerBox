@@ -73,7 +73,7 @@ namespace PowerBox2
 
             try
             {
-                cam = new Camera();
+                cam = new Camera(debag);
             }
             catch (Exception ex)
             {
