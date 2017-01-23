@@ -145,6 +145,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Image\1.jpg" />
+    <Content Include="Image\face_detect.png" />
+    <Content Include="Image\next.png" />
+    <Content Include="Image\pause.png" />
+    <Content Include="Image\play.png" />
+    <Content Include="Image\previous.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

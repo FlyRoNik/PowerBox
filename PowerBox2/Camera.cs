@@ -1,12 +1,11 @@
 ﻿using System;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Media.Capture;
 using Windows.Media.MediaProperties;
 using Windows.Storage;
 using System.Threading.Tasks;
-using Windows.Storage.Streams;
-using Windows.UI.Xaml.Controls;
 
 namespace PowerBox2
 {
@@ -15,56 +14,24 @@ namespace PowerBox2
         private MediaCapture mediaCapture;
         private StorageFile photoFile;
         private StorageFile recordStorageFile;
-        private BitmapImage bitmap;
-        private IRandomAccessStreamWithContentType stream;
         private readonly string PHOTO_FILE_NAME = "photo.jpg";
         private readonly string VIDEO_FILE_NAME = "video.mp4";
-        private readonly string AUDIO_FILE_NAME = "audio.mp3";
         private bool isRecording;
-        private bool isPreviewing;
         private DispatcherTimer timer;
         private Debag debag;
 
-        private Action<string> delegatePrint;
-        private Action delegateFailed;
-        private Action delegateRecordLimitExceeded;
-
-        private string status;
-
-        private Camera()
+        public Camera(Debag debag)
         {
             isRecording = false;
-            isPreviewing = false;
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
-        }
-
-        public Camera(Debag debag) : this()
-        {
             this.debag = debag;
-        }
-
-        public Camera(Debag debag,
-            Action<string> delegatePrint, 
-            Action delegateFailed, 
-            Action delegateRecordLimitExceeded) : this()
-        {
-            this.debag = debag;
-            this.delegatePrint = delegatePrint;
-            this.delegateFailed = delegateFailed;
-            this.delegateRecordLimitExceeded = delegateRecordLimitExceeded;
         }
 
         public async void Cleanup()
         {
             if (mediaCapture != null)
             {
-                // Cleanup MediaCapture object
-                if (isPreviewing)
-                {
-                    await mediaCapture.StopPreviewAsync();
-                    isPreviewing = false;
-                }
                 if (isRecording)
                 {
                     await mediaCapture.StopRecordAsync();
@@ -77,66 +44,23 @@ namespace PowerBox2
 
         private void printStatus(string status)
         {
-            if (delegatePrint == null)
-            {
-                debag.WriteSD_Debag(status);
-            }
-            else
-            {
-                delegatePrint(status);
-            }
+            debag.WriteSD_Debag(status);
         }
 
-        public bool getIsRecording()
-        {
-            return isRecording;
-        }
-
-        public StorageFile getRecordStorageFile()
-        {
-            return recordStorageFile;
-        }
-
-        public BitmapImage getBitmap()
-        {
-            return bitmap;
-        }
-
-        public bool getIsPreviewing()
-        {
-            return isPreviewing;
-        }
-
-        public MediaCapture getMediaCapture()
-        {
-            return mediaCapture;
-        }
-
-        public IRandomAccessStreamWithContentType getStream()
-        {
-            return stream;
-        }
-
-         //'Initialize Audio and Video' button action function
-         //Dispose existing MediaCapture object and set it up for audio and video
-         //Enable or disable appropriate buttons
-         //- DISABLE 'Initialize Audio and Video' 
-         //- DISABLE 'Start Audio Record'
-         //- ENABLE 'Initialize Audio Only'
-         //- ENABLE 'Start Video Record'
-         //- ENABLE 'Take Photo'
-        public async void initVideo(CaptureElement previewElement = null)
+        //'Initialize Audio and Video' button action function
+        //Dispose existing MediaCapture object and set it up for audio and video
+        //Enable or disable appropriate buttons
+        //- DISABLE 'Initialize Audio and Video' 
+        //- DISABLE 'Start Audio Record'
+        //- ENABLE 'Initialize Audio Only'
+        //- ENABLE 'Start Video Record'
+        //- ENABLE 'Take Photo'
+        public async void initVideo()
         {
             try
             {
                 if (mediaCapture != null)
                 {
-                    // Cleanup MediaCapture object
-                    if (isPreviewing)
-                    {
-                        await mediaCapture.StopPreviewAsync();
-                        isPreviewing = false;
-                    }
                     if (isRecording)
                     {
                         await mediaCapture.StopRecordAsync();
@@ -154,15 +78,7 @@ namespace PowerBox2
                 // Set callbacks for failure and recording limit exceeded
                 printStatus("Device successfully initialized for video recording!");
                 mediaCapture.Failed += new MediaCaptureFailedEventHandler(mediaCapture_Failed);
-                mediaCapture.RecordLimitationExceeded += new Windows.Media.Capture.RecordLimitationExceededEventHandler(mediaCapture_RecordLimitExceeded);
-
-                if (previewElement == null)
-                {
-                    previewElement.Source = mediaCapture;
-                    await mediaCapture.StartPreviewAsync();
-                }
-
-                isPreviewing = true;
+                mediaCapture.RecordLimitationExceeded += new RecordLimitationExceededEventHandler(mediaCapture_RecordLimitExceeded);
                 printStatus("Camera preview succeeded");
             }
             catch (Exception ex)
@@ -181,18 +97,12 @@ namespace PowerBox2
                     PHOTO_FILE_NAME, CreationCollisionOption.GenerateUniqueName);
                 ImageEncodingProperties imageProperties = ImageEncodingProperties.CreateJpeg();
                 await mediaCapture.CapturePhotoToStorageFileAsync(imageProperties, photoFile);
-
-                IRandomAccessStream photoStream = await photoFile.OpenReadAsync();
-                bitmap = new BitmapImage();
-                bitmap.SetSource(photoStream);
-
                 printStatus("Take Photo succeeded: " + photoFile.Path);
             }
             catch (Exception ex)
             {
                 printStatus(ex.Message);
                 Cleanup();
-                bitmap = null;
             }
         }
 
@@ -205,6 +115,7 @@ namespace PowerBox2
             {
                 if (!isRecording)
                 {
+                    printStatus("Initialize video recording");
                     String fileName;
                     fileName = VIDEO_FILE_NAME;
 
@@ -213,28 +124,31 @@ namespace PowerBox2
                     printStatus("Video storage file preparation successful");
 
                     MediaEncodingProfile recordProfile = null;
-                    recordProfile = MediaEncodingProfile.CreateMp4(Windows.Media.MediaProperties.VideoEncodingQuality.Auto);
+                    recordProfile = MediaEncodingProfile.CreateMp4(VideoEncodingQuality.Auto);
 
                     await mediaCapture.StartRecordToStorageFileAsync(recordProfile, recordStorageFile);
+
                     isRecording = true;
                     printStatus("Video recording in progress... press \'Stop Video Record\' to stop");
                 }
                 else
                 {
+                    printStatus("Stopping video recording...");
                     await mediaCapture.StopRecordAsync();
                     isRecording = false;
-
-                    stream = await recordStorageFile.OpenReadAsync();
-                    printStatus("Stopping video recording...");
                 }
             }
             catch (Exception ex)
             {
-                if (!(ex is System.UnauthorizedAccessException))
+                if (ex is UnauthorizedAccessException)
                 {
+                    printStatus("Unable to play recorded video; video recorded successfully to: " + recordStorageFile.Path);
+                }
+                else
+                {
+                    printStatus(ex.Message);
                     Cleanup();
                 }
-                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -258,7 +172,6 @@ namespace PowerBox2
                 finally
                 {
                     printStatus("Check if camera is diconnected. Try re-launching the app");
-                    delegateFailed();
                 }
             });
         }
@@ -276,7 +189,6 @@ namespace PowerBox2
                             printStatus("Stopping Record on exceeding max record duration");
                             await mediaCapture.StopRecordAsync();
                             isRecording = false;
-                            delegateRecordLimitExceeded();
                             printStatus("Stopped record on exceeding max record duration: " + recordStorageFile.Path);
                         }
                         catch (Exception e)
