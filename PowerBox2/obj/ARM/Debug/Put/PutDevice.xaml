@@ -1,0 +1,20 @@
+﻿<Page
+    x:Class="PowerBox2.Put.PutDevice"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerBox2.Put"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Height="600">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock x:ConnectionId='1' x:Name="textBlock" HorizontalAlignment="Left" Margin="326,68,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="36" Height="118" Width="423">
+            <Run Text="П"/>
+            <Run Text="одключите девайс и за"/>
+            <Run Text="кройте"/>
+            <Run Text=" ячейку"/>
+        </TextBlock>
+        <TextBlock x:ConnectionId='2' x:Name="textBlock1" HorizontalAlignment="Left" Margin="421,326,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="36"/>
+    </Grid>
+</Page>
+

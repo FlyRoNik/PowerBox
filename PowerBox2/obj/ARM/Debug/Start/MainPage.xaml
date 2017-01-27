@@ -1,0 +1,180 @@
+﻿<Page
+    x:Class="PowerBox2.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PowerBox2.Start"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Height="480" Width="800">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="0,0,0,0">
+
+        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Button x:ConnectionId='1' x:Name="button" Content="Continue"                       Height="30" Width="100"/>
+                <TextBlock x:ConnectionId='2' x:Name="textBlock" Text="TextBlock"/>
+                <Button x:ConnectionId='3' x:Name="button1" Content="init_box"                      />
+                <Button x:ConnectionId='4' x:Name="button2" Content="Init_webCam"                      />
+                <Button x:ConnectionId='5' x:Name="button3" Content="photo"                      />
+                <Button x:ConnectionId='6' x:Name="button4" Content="video"                      />
+                <Button x:ConnectionId='7' x:Name="button5" Content="Close"                      />
+                <Button x:ConnectionId='8' x:Name="button6" Content="Detec"                      />
+                <TextBlock x:ConnectionId='9' x:Name="textBlock1" TextWrapping="Wrap" Text=""/>
+                <Button x:ConnectionId='10' x:Name="button7" Content="Dell"                      />
+                <Button x:ConnectionId='11' x:Name="button9" Content="AreYouStillHere"                      />
+                <StackPanel>
+                    <TextBlock Text="Finger Print Scaner" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <Grid>
+                        <StackPanel HorizontalAlignment="Center" Margin="-570,0,0,0" VerticalAlignment="Center">
+                            <Button x:ConnectionId='55' x:Name="resetScan" Content="Reset Scaner"                         Height="30" Width="160" HorizontalAlignment="Center" Margin="0,10,0,10"/>
+                            <Button x:ConnectionId='56' x:Name="blinkScan" Content="Blink Scaner"                         Height="30" Width="160" HorizontalAlignment="Center" Margin="0,10,0,10"/>
+                            <Button x:ConnectionId='57' x:Name="waitScan" Content="Wait Scaner"                        Height="30" Width="160" HorizontalAlignment="Center" Margin="0,10,0,10"/>
+                            <StackPanel Width="160" HorizontalAlignment="Center">
+                                <TextBlock Text="Allow Same Prints?" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30"/>
+                                <Grid Height="50">
+                                    <Button x:ConnectionId='58' x:Name="allowSamePrints" Content="Yes"                               Height="30" Width="50" HorizontalAlignment="Left" Margin="0,10,0,10"/>
+                                    <Button x:ConnectionId='59' x:Name="prohibitSamePrints" Content="No"                                  Height="30" Width="50" HorizontalAlignment="Right" Margin="0,10,0,10"/>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid>
+                                <TextBox x:ConnectionId='46' x:Name="textBox" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="0" Height="30" VerticalAlignment="Top" Margin="10,10,10,10"/>
+                                <StackPanel HorizontalAlignment="Center" Margin="-190,50,0,0">
+                                    <ComboBox x:ConnectionId='51' x:Name="privilege" Height="30" Width="160" HorizontalAlignment="Right" Margin="10,10,10,0" PlaceholderText="Privilege">
+                                    </ComboBox>
+                                    <Button x:ConnectionId='52' x:Name="addPerson" Content="Add Person"                         Height="30" Width="160" HorizontalAlignment="Left" Margin="10,0,10,10"/>
+                                    <Button x:ConnectionId='53' x:Name="dellPerson" Content="Delete Person"                          Height="30" Width="160" Margin="10,10,10,10"/>
+                                    <Button x:ConnectionId='54' x:Name="dellAll" Content="Delete All Person"                       Height="30" Width="160" Margin="10,10,10,10"/>
+                                </StackPanel>
+                                <StackPanel HorizontalAlignment="Center" Margin="190,50,0,0">
+                                    <Button x:ConnectionId='47' x:Name="compareOneToOne" Content="Compare 1:1"                               Height="30" Width="160" Margin="10,10,10,10"/>
+                                    <Button x:ConnectionId='48' x:Name="getPrivilagePerson" Content="Get Privilage Person"                                  Height="30" Width="160" Margin="10,10,10,10"/>
+                                    <Button x:ConnectionId='49' x:Name="setComparisonLevel" Content="Set Comparison &#xD;&#xA;Level"                                  Height="50" Width="160" Margin="10,10,10,10"/>
+                                    <Button x:ConnectionId='50' x:Name="setTimeOut" Content="Set Time Out"                          Height="30" Width="160" Margin="10,10,10,10"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Margin="570,0,0,0" VerticalAlignment="Center">
+                            <Button x:ConnectionId='41' x:Name="getComparisonLevel" Content="Get Comparison &#xD;&#xA;Level"                                  Height="50" Width="160" Margin="10,10,10,10"/>
+                            <Button x:ConnectionId='42' x:Name="getPrivilageAndIdAllPerson" Content="Get Privilage and&#xD;&#xA; ID All Person"                                          Height="50" Width="160" Margin="10,10,10,10"/>
+                            <Button x:ConnectionId='43' x:Name="compareOwnToMore" Content="Compare 1:N"                                Height="30" Width="160" Margin="10,10,10,10"/>
+                            <Button x:ConnectionId='44' x:Name="getTimeOut" Content="Get Time Out"                          Height="30" Width="160" Margin="10,10,10,10"/>
+                            <Button x:ConnectionId='45' x:Name="getNumberPersons" Content="Get Number Persons"                                Height="30" Width="160" Margin="10,10,10,10"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock x:ConnectionId='40' x:Name="message" TextWrapping="Wrap" Text="Massage" Height="30" Margin="10,10,10,10"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="MCU" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <ComboBox x:ConnectionId='39' x:Name="comboBox" Height="30" Width="150" ItemsSource="{Binding}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Explorer" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Web Camera" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <Grid>
+                        <Grid.ChildrenTransitions>
+                            <TransitionCollection>
+                                <!--<EntranceThemeTransition/>-->
+                                <RepositionThemeTransition/>
+                            </TransitionCollection>
+                        </Grid.ChildrenTransitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel x:ConnectionId='12' Grid.Row="1" x:Name="ContentRoot" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                            <Button x:ConnectionId='37' x:Name="video_init" Content="Initialize Audio/Video"                         HorizontalAlignment="Left" Margin="0,0,30,0" Width="180"/>
+                            <Button x:ConnectionId='38' x:Name="cleanup" Content="Close Camera"                       Width="120"/>
+                        </StackPanel>
+
+                        <StackPanel x:ConnectionId='13' Grid.Row="2" x:Name="ContentRootActions" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="12,0,12,0">
+                            <Button x:ConnectionId='33' x:Name="takePhoto" Content="Take Photo"                         Margin="0,20,30,0" Width="120" IsEnabled="False" Visibility="Collapsed"/>
+                            <Button x:ConnectionId='34' x:Name="recordVideo"                           IsEnabled="False" Margin="0,20,0,0" Width="150" Visibility="Collapsed">
+                                <Grid>
+                                    <Ellipse x:ConnectionId='35' x:Name="StartRecordingIcon" Fill="Red" Width="20" Height="20"/>
+                                    <Rectangle x:ConnectionId='36' x:Name="StopRecordingIcon" Fill="White" Width="20" Height="20" Visibility="Collapsed"/>
+                                </Grid>
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                            <StackPanel Margin="0,0,10,0">
+                                <TextBlock x:ConnectionId='26' Name="PreviewTitle" Grid.Row="0" Grid.Column="0" Text="Preview" HorizontalAlignment="Center" Margin="0,10,0,10" Visibility="Visible"/>
+                                <Canvas x:ConnectionId='27' Name="PreviewCanvas" Grid.Row="1" Grid.Column="0" Width="200" Height="200" Background="Gray" Visibility="Visible">
+                                    <CaptureElement x:ConnectionId='31' x:Name="previewElement" Width="200" Height="200" HorizontalAlignment="Left" Visibility="Visible" Stretch="Uniform"/>
+                                    <Canvas>
+                                        <!--Canvas that will host the face detection bounding boxes, will share the same bounds as the preview within the CaptureElement-->
+                                        <!--It's contained inside of another canvas to allow for adjusting its size and position after applying a RenderTransform -->
+                                        <!--For more details, see SetFacesCanvasRotation-->
+                                        <Canvas x:ConnectionId='32' Name="FacesCanvas" RenderTransformOrigin="0.5,0.5"/>
+                                    </Canvas>
+                                </Canvas>
+                                <Grid Height="50">
+                                    <!--<Button x:Name="faceDetect" Click="faceDetect_Click" Height="30" Width="40" HorizontalAlignment="Center" Margin="0,10,0,10">
+                                        <Image Source="/Image/face_Detect.png"></Image>
+                                    </Button>-->
+                                    <Button x:ConnectionId='28' x:Name="faceDetect"                          IsEnabled="False" Height="30" Width="40" HorizontalAlignment="Center" Margin="0,10,0,10">
+                                        <Viewbox>
+                                            <Grid>
+                                                <SymbolIcon x:ConnectionId='29' Name="FaceDetectionDisabledIcon" Symbol="Contact" Visibility="Visible"/>
+                                                <SymbolIcon x:ConnectionId='30' Name="FaceDetectionEnabledIcon" Symbol="Contact2" Visibility="Collapsed"/>
+                                            </Grid>
+                                        </Viewbox>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel Margin="10,0,10,0">
+                                <TextBlock x:ConnectionId='21' Name="ImageTitle" Grid.Row="0" Grid.Column="1" Text="Last captured photo" HorizontalAlignment="Center" Margin="0,10,0,10" Visibility="Visible"/>
+                                <Canvas x:ConnectionId='22' Name="PhotoCanvas" Grid.Row="1" Grid.Column="1" Width="200" Height="200" Background="Gray" Visibility="Visible">
+                                    <Image x:ConnectionId='25' x:Name="captureImage" Width="200" Height="200" Visibility="Visible"/>
+                                </Canvas>
+                                <Grid Height="50">
+                                    <Button x:ConnectionId='23' x:Name="nextPhoto"                         Height="30" Width="40" HorizontalAlignment="Right" Margin="0,10,0,10">
+                                        <Image Source="/Image/next.png" Height="18" VerticalAlignment="Top"></Image>
+                                    </Button>
+                                    <Button x:ConnectionId='24' x:Name="previousPhoto"                             Height="30" Width="40" HorizontalAlignment="Left" Margin="0,10,0,10">
+                                        <Image Source="/Image/previous.png" Height="18" VerticalAlignment="Bottom"></Image>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel Margin="10,0,0,0">
+                                <TextBlock x:ConnectionId='15' Name="VideoTitle" Grid.Row="0" Grid.Column="2" Text="Last Recorded Video" HorizontalAlignment="Center" Margin="0,10,0,10" Visibility="Visible"/>
+                                <Canvas x:ConnectionId='16' Name="VideoCanvas" Grid.Row="1" Grid.Column="2" Width="200" Height="200" Background="Gray" Visibility="Visible">
+                                    <MediaElement x:ConnectionId='20' x:Name="playbackElement" Width="200" Height="200" Visibility="Visible"/>
+                                </Canvas>
+                                <Grid Height="50">
+                                    <Button x:ConnectionId='17' x:Name="nextVideo"                         Height="30" HorizontalAlignment="Left" Margin="160,10,0,10" Width="40">
+                                        <Image Source="/Image/next.png" Height="18" VerticalAlignment="Top"></Image>
+                                    </Button>
+                                    <Button x:ConnectionId='18' x:Name="playOrStopVideo"                               Height="30" Width="40" HorizontalAlignment="Center" Margin="0,10,0,10">
+                                        <Image Source="/Image/play.png"></Image>
+                                    </Button>
+                                    <Button x:ConnectionId='19' x:Name="previousVideo"                             Height="30" Width="40" HorizontalAlignment="Left" Margin="0,10,0,10">
+                                        <Image Source="/Image/previous.png"></Image>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="4">
+                            <TextBlock Text="Status" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                            <ScrollViewer HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBox x:ConnectionId='14'
+				                    x:Name="status" TextWrapping="Wrap" IsReadOnly="True" Height="60" Width="400" HorizontalAlignment="Left" VerticalAlignment="Top" 
+				                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
+
